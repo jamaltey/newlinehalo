@@ -10,7 +10,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<NotFound />} />
     </Route>
   ),
-  { basename: '/newlinehalo' }
+  { basename: import.meta.env.MODE === 'production' ? '/newlinehalo' : undefined }
 );
 
 export default router;

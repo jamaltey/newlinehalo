@@ -9,7 +9,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="*" element={<NotFound />} />
     </Route>
-  )
+  ),
+  { basename: '/newlinehalo' }
 );
 
 export default router;

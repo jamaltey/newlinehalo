@@ -3,31 +3,42 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Bookmark, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import { Link } from 'react-router';
+import { Link, useLocation, useMatches } from 'react-router';
 import SearchDialog from './SearchDialog';
+
+const menuItems = [
+  { name: 'Men', link: '/men' },
+  { name: 'Women', link: '/women' },
+  { name: 'Accessories', link: '/accesories' },
+  { name: 'Sale', link: '/sale' },
+];
+
+const noDynamicHeaderRoutes = [''];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [searchInputShown, setSearchInputShown] = useState(false);
+  const [isSearchInputVisible, setIsSearchInputVisible] = useState(false);
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const matches = useMatches();
 
-  const menuItems = [
-    { name: 'Men', link: '#' },
-    { name: 'Women', link: '#' },
-    { name: 'Accessories', link: '#' },
-    { name: 'Sale', link: '#' },
-  ];
+  const is404 = matches.some(m => m.handle?.is404);
+  const noDynamicHeader = is404 || noDynamicHeaderRoutes.includes(location.pathname);
+  const isBgCream = noDynamicHeader || scrolled;
+  const isTextDark = noDynamicHeader || scrolled || mobileOpen;
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const search = e => {
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname])
+
+  const handleSearchSubmit = e => {
     e.preventDefault();
   };
 
@@ -38,8 +49,8 @@ const Header = () => {
         transition={{ duration: 0.2, ease: 'easeOut' }}
         className={clsx(
           'fixed top-0 z-50 w-full transition-colors duration-100',
-          scrolled ? 'bg-cream' : 'bg-transparent',
-          scrolled || mobileOpen ? 'text-[#1e1e1e]' : 'text-white'
+          isBgCream ? 'bg-cream' : 'bg-transparent',
+          isTextDark ? 'text-dark' : 'text-white'
         )}
       >
         <AnimatePresence mode="popLayout" initial={false}>
@@ -51,7 +62,10 @@ const Header = () => {
               animate={{ y: 0 }}
               exit={{ y: -50 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="border border-[#cbcbcb] py-2 text-[11px] font-bold uppercase"
+              className={clsx(
+                'border border-[#cbcbcb] py-2 text-[11px] font-bold text-white uppercase',
+                noDynamicHeader && 'bg-dark'
+              )}
             >
               <Marquee autoFill>
                 <div className="ml-10 h-[.5em] w-[.5em] bg-white"></div>
@@ -66,12 +80,12 @@ const Header = () => {
             layout
             className={clsx(
               'flex items-center justify-between border-b border-[#cbcbcb] px-7 py-4',
-              scrolled ? 'bg-cream' : 'bg-transparent'
+              isBgCream ? 'bg-cream' : 'bg-transparent'
             )}
           >
             {/* Logo */}
             <Link to="/" className="mx-4 text-xl leading-tight font-bold">
-              <img className={scrolled || mobileOpen ? undefined : 'invert'} src="icons/logo.svg" alt="HALO" />
+              <img className={isTextDark ? undefined : 'invert'} src="icons/logo.svg" alt="HALO" />
             </Link>
 
             {/* Navigation */}
@@ -84,12 +98,12 @@ const Header = () => {
               ))}
             </nav>
 
-            <form onSubmit={search} className="relative flex items-center space-x-4">
-              <div className="absolute right-full hidden lg:flex" onMouseOver={() => setSearchInputShown(true)}>
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center space-x-4">
+              <div className="absolute right-full hidden lg:flex" onMouseOver={() => setIsSearchInputVisible(true)}>
                 <button type="submit">
                   <Search size={18} />
                 </button>
-                {searchInputShown && (
+                {isSearchInputVisible && (
                   <input
                     className="pl-4 text-xs placeholder:text-inherit focus:outline-0 focus:placeholder:opacity-0"
                     type="search"
@@ -119,12 +133,12 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.2 }}
-              className="bg-cream absolute top-0 left-0 -z-10 flex h-screen w-full text-[#1e1e1e] lg:hidden"
+              className="bg-cream text-dark absolute top-0 left-0 -z-10 flex h-screen w-full lg:hidden"
             >
               <div className="w-64 p-6 pt-20">
                 <nav className="mt-8 flex flex-col space-y-4">
                   {menuItems.map(({ name, link }, index) => (
-                    <Link key={index} to={link} className="text-2xl font-bold uppercase" onClick={() => setMobileOpen(false)}>
+                    <Link key={index} to={link} className="text-2xl font-bold uppercase">
                       {name}
                     </Link>
                   ))}

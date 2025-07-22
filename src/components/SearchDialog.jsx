@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Search, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const SearchDialog = ({ open, setOpen }) => {
   const [query, setQuery] = useState('');
@@ -21,10 +21,10 @@ const SearchDialog = ({ open, setOpen }) => {
 
   const submit = e => {
     e.preventDefault();
-  }
+  };
 
   return (
-    <Dialog className="bg-cream fixed inset-0 z-50 text-[#1e1e1e] lg:hidden" open={open} onClose={() => setOpen(false)}>
+    <Dialog className="bg-cream text-dark fixed inset-0 z-50 lg:hidden" open={open} onClose={() => setOpen(false)}>
       <DialogPanel className="p-4">
         <div className="flex w-full justify-end">
           <button className="text-[#212529]" onClick={() => setOpen(false)} type="button">
@@ -32,7 +32,7 @@ const SearchDialog = ({ open, setOpen }) => {
           </button>
         </div>
         <form className="flex w-full border-b px-6 py-3" onSubmit={submit}>
-          <Search className='mr-6' size={25} />
+          <Search className="mr-6" size={25} />
           <input
             className="w-full"
             value={query}

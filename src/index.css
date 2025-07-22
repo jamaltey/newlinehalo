@@ -5,3 +5,23 @@
   --font-roboto: 'Roboto', sans-serif;
   --color-cream: #ebe9e3;
 }
+
+button {
+  cursor: pointer;
+}
+
+.btn {
+  @apply relative overflow-hidden cursor-pointer uppercase px-6 py-3 rounded-4xl;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #fff, transparent);
+    transition: left 1s;
+  }
+
+  @apply hover:before:left-full;
+}

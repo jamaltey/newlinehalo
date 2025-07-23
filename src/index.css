@@ -12,7 +12,9 @@ button {
 }
 
 .btn {
-  @apply relative overflow-hidden cursor-pointer uppercase px-6 py-3 rounded-4xl;
+  @apply relative overflow-hidden cursor-pointer uppercase font-bold px-6 py-3 rounded-4xl;
+
+  background-color: var(--btn-bg, #fff);
 
   &::before {
     content: '';
@@ -21,7 +23,7 @@ button {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, #fff, transparent);
+    background: linear-gradient(to right, var(--btn-bg, #fff), transparent);
     transition: left 1s;
   }
 

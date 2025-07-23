@@ -133,7 +133,7 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.2 }}
-              className="bg-cream text-dark absolute top-0 left-0 -z-10 flex h-screen w-full lg:hidden"
+              className="bg-cream text-dark absolute top-0 left-0 -z-10 flex h-[150vh] w-full lg:hidden"
             >
               <div className="w-64 p-6 pt-20">
                 <nav className="mt-8 flex flex-col space-y-4">

@@ -36,7 +36,7 @@ const Header = () => {
 
   useEffect(() => {
     setMobileOpen(false);
-  }, [location.pathname])
+  }, [location.pathname]);
 
   const handleSearchSubmit = e => {
     e.preventDefault();
@@ -115,9 +115,17 @@ const Header = () => {
               <button className="lg:hidden" type="button" onClick={() => setSearchDialogOpen(true)}>
                 <Search size={18} />
               </button>
-              <Bookmark size={18} />
-              <User size={18} />
-              <ShoppingBag size={18} />
+              <div className="group flex items-center *:pr-4">
+                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                  <Bookmark className="inline-block transition-opacity duration-250" size={18} />
+                </Link>
+                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                  <User className="inline-block transition-opacity duration-250" size={18} />
+                </Link>
+                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                  <ShoppingBag className="inline-block transition-opacity duration-250" size={18} />
+                </Link>
+              </div>
               <button className="lg:hidden" type="button" onClick={() => setMobileOpen(!mobileOpen)}>
                 {mobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>

@@ -115,7 +115,7 @@ const Header = () => {
               <button className="lg:hidden" type="button" onClick={() => setSearchDialogOpen(true)}>
                 <Search size={18} />
               </button>
-              <div className="group flex items-center *:pr-4">
+              <div className="group -ml-2 *:px-2">
                 <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <Bookmark className="inline-block transition-opacity duration-250" size={18} />
                 </Link>

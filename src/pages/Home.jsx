@@ -24,10 +24,14 @@ const Home = () => {
           textBlack
         />
       </div>
-      <Link className="relative block h-[50vh]" to="https://www.newlinehalo.com/archive">
-        <img className="h-full w-full object-cover" src="images/homepage/halo-archive.jpg" alt="The Halo Archive" />
-        <h4 className="absolute bottom-0 px-7.5 py-4 text-[2rem] font-bold text-white md:py-7.5">The Halo Archive</h4>
-      </Link>
+      <ProductFeatureCard
+        className="h-[50vh]"
+        imageSrc="images/homepage/halo-archive.jpg"
+        label="The Halo Archive"
+        labelProminent
+        showLinkIcon={false}
+        link="https://www.newlinehalo.com/archive"
+      />
       <div className="flex flex-col md:flex-row">
         <ProductFeatureCard
           imageSrc="images/homepage/light-outwear.jpg"

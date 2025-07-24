@@ -5,6 +5,6 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
-  server: { open: true },
+  server: { open: true, host: true },
   base: mode === 'production' ? '/newlinehalo/' : '/',
 }));

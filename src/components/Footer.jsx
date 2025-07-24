@@ -194,7 +194,7 @@ const Footer = () => {
           </div>
 
           {/* Address Info */}
-          <div className="mb-7 md:mb-10.5 leading-3 font-medium">
+          <div className="mb-7 leading-3 font-medium md:mb-10.5">
             <span>© HUMMEL CENOZOIC APS</span>
             <br />
             <span>Balticagade 20</span>

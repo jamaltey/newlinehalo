@@ -7,7 +7,7 @@ const Login = () => {
   const [signupFormShown, setSignupFormShown] = useState(false);
 
   return (
-    <div className="container mx-auto mt-40 mb-25 max-w-3xl">
+    <div className="container mx-auto max-w-3xl pt-40 pb-25">
       <div className="relative flex items-end justify-center pb-14">
         <button className="absolute left-0 hidden uppercase hover:underline lg:flex" onClick={() => history.back()}>
           <ChevronLeft />

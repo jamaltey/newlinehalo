@@ -180,7 +180,7 @@ const Footer = () => {
           {disclosures.map(
             ({ title, links }, index) =>
               index <= 2 && (
-                <div className="w-1/3 border-r border-[#cbcbcb] p-7.5 text-[11px]">
+                <div key={index} className="w-1/3 border-r border-[#cbcbcb] p-7.5 text-[11px]">
                   <h6 className="mb-5 flex w-full items-center justify-between font-bold uppercase">{title}</h6>
                   <ul className="flex flex-col gap-2">
                     {links.map(({ title, url }, index) => (

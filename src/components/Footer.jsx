@@ -85,7 +85,7 @@ const NewsletterSignup = () => {
 
 const disclosures = [
   {
-    title: 'Halo',
+    title: '01 / Halo',
     links: [
       { title: 'About Halo', url: '#' },
       { title: 'Contact', url: '#' },
@@ -93,7 +93,7 @@ const disclosures = [
     ],
   },
   {
-    title: 'Customer Service',
+    title: '02 / Customer Service',
     links: [
       { title: 'FAQ', url: '#' },
       { title: 'Delivery', url: '#' },
@@ -106,12 +106,24 @@ const disclosures = [
     ],
   },
   {
-    title: 'Popular picks',
+    title: '03 / Popular picks',
     links: [
       { title: 'Fleece', url: '#' },
       { title: "Women's specific", url: '#' },
       { title: 'Outdoor', url: '#' },
       { title: 'Essentials', url: '#' },
+    ],
+  },
+  {
+    title: (
+      <span className="flex items-end gap-2">
+        <Globe strokeWidth={1} size={18} />
+        International
+      </span>
+    ),
+    links: [
+      { title: 'International', url: '#' },
+      { title: 'Denmark', url: '#' },
     ],
   },
 ];
@@ -138,9 +150,7 @@ const Footer = () => {
               {({ open }) => (
                 <div className="border-b border-[#cbcbcb] text-[11px]">
                   <DisclosureButton className="flex w-full items-center justify-between px-5 py-2.5 font-bold uppercase">
-                    <span>
-                      0{index + 1} / {title}
-                    </span>
+                    {title}
                     {open ? <Minus /> : <Plus />}
                   </DisclosureButton>
                   <div className="overflow-hidden">
@@ -167,24 +177,23 @@ const Footer = () => {
 
         {/* Disclosures (visible on md+) */}
         <div className="hidden w-6/12 border-l border-[#cbcbcb] md:flex">
-          {disclosures.map(({ title, links }, index) => (
-            <div className="w-1/3 border-r border-[#cbcbcb] p-7.5 text-[11px]">
-              <h6 className="mb-5 flex w-full items-center justify-between font-bold uppercase">
-                <span>
-                  0{index + 1} / {title}
-                </span>
-              </h6>
-              <ul className="flex flex-col gap-2">
-                {links.map(({ title, url }, index) => (
-                  <li key={index}>
-                    <a href={url} className="font-medium uppercase hover:underline">
-                      {title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {disclosures.map(
+            ({ title, links }, index) =>
+              index <= 2 && (
+                <div className="w-1/3 border-r border-[#cbcbcb] p-7.5 text-[11px]">
+                  <h6 className="mb-5 flex w-full items-center justify-between font-bold uppercase">{title}</h6>
+                  <ul className="flex flex-col gap-2">
+                    {links.map(({ title, url }, index) => (
+                      <li key={index}>
+                        <a href={url} className="font-medium uppercase hover:underline">
+                          {title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+          )}
         </div>
 
         <div className="text-dark w-full px-5 py-5 text-[11px] md:order-first md:w-3/12 md:p-7.5">

@@ -8,7 +8,7 @@ const Home = () => {
         <img className="h-full w-full object-cover" src="images/homepage/hero.jpg" alt="Hero" />
         <div className="absolute bottom-0 flex w-full flex-col items-start justify-between gap-y-4 p-8 lg:flex-row">
           <h2 className="text-[2rem] font-bold text-white md:text-[2.5rem]">For any transition</h2>
-          <Link className="btn text-[15px] leading-[17.25px]">Shop the news</Link>
+          <Link className="btn text-dark text-[15px] leading-[17.25px] [--btn-bg:#fff]">Shop the news</Link>
         </div>
       </div>
       <div className="flex flex-col md:flex-row">

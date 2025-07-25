@@ -69,11 +69,11 @@ const NewsletterSignup = () => {
           )}
 
           {email ? (
-            <button className="btn mt-6 text-[13px] text-white [--btn-bg:#1e1e1e] max-md:w-full" type="submit">
+            <button className="btn mt-6 text-[13px] max-md:w-full" type="submit">
               Subscribe
             </button>
           ) : (
-            <button className="btn mt-6 text-[13px] text-white [--btn-bg:#ff6600] max-md:w-full" type="submit">
+            <button className="btn mt-6 text-[13px] [--btn-bg:#ff6600] max-md:w-full" type="submit">
               Sign Up
             </button>
           )}

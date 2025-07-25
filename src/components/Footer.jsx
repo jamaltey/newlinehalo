@@ -212,14 +212,14 @@ const Footer = () => {
                 <img
                   src="https://www.newlinehalo.com/on/demandware.static/-/Sites-halo-Library/default/dwc49e2550/footer/facebook.svg"
                   alt="Facebook"
-                  className="h-6 w-6"
+                  className="size-6"
                 />
               </a>
               <a href="https://www.instagram.com/newline.halo/?hl=da" target="_blank" rel="noopener noreferrer">
                 <img
                   src="https://www.newlinehalo.com/on/demandware.static/-/Sites-halo-Library/default/dw634be4e9/footer/instagram.svg"
                   alt="Instagram"
-                  className="h-6 w-6"
+                  className="size-6"
                 />
               </a>
             </div>

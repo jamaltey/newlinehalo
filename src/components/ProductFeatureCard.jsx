@@ -25,7 +25,7 @@ const ProductFeatureCard = ({
           )}
           {showLinkIcon && (
             <img
-              className={clsx('ml-auto h-10 w-10 cursor-pointer', textBlack && 'invert-100')}
+              className={clsx('ml-auto size-10 cursor-pointer', textBlack && 'invert-100')}
               src="icons/link.svg"
               loading="lazy"
               alt=""

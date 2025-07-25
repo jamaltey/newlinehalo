@@ -1,10 +1,11 @@
-import Header from '../components/Header';
+import { Outlet, ScrollRestoration } from 'react-router';
 import Footer from '../components/Footer';
-import { Outlet } from 'react-router';
+import Header from '../components/Header';
 
 const MainLayout = () => {
   return (
     <>
+      <ScrollRestoration />
       <Header />
       <main className="min-h-screen">
         <Outlet />

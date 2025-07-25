@@ -13,7 +13,7 @@ const menuItems = [
   { name: 'Sale', link: '/sale' },
 ];
 
-const noDynamicHeaderRoutes = [''];
+const forceDarkHeaderRoutes = ['/login'];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,9 +24,9 @@ const Header = () => {
   const matches = useMatches();
 
   const is404 = matches.some(m => m.handle?.is404);
-  const noDynamicHeader = is404 || noDynamicHeaderRoutes.includes(location.pathname);
-  const isBgCream = noDynamicHeader || scrolled;
-  const isTextDark = noDynamicHeader || scrolled || mobileOpen;
+  const forceDarkHeader = is404 || forceDarkHeaderRoutes.includes(location.pathname);
+  const isBgCream = forceDarkHeader || scrolled;
+  const isTextDark = forceDarkHeader || scrolled || mobileOpen;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -64,7 +64,7 @@ const Header = () => {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className={clsx(
                 'border border-[#cbcbcb] py-2 text-[11px] font-bold text-white uppercase',
-                noDynamicHeader && 'bg-dark'
+                forceDarkHeader && 'bg-dark'
               )}
             >
               <Marquee autoFill>
@@ -119,7 +119,7 @@ const Header = () => {
                 <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <Bookmark className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
-                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                <Link to='/login' className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <User className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
                 <Link className="group-hover:*:opacity-50 hover:*:opacity-100">

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import * as yup from 'yup';
+import { useAuth } from '../../contexts/AuthContext';
 import { emailRegex } from '../../utils/validation';
 import AuthCheckbox from './AuthCheckbox';
 import AuthInput from './AuthInput';
@@ -19,9 +20,10 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const { signIn } = useAuth();
 
-  const submit = data => {
-    console.log(data);
+  const submit = ({ email, password }) => {
+    signIn(email, password, rememberMe);
   };
 
   return (

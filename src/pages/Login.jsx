@@ -1,18 +1,22 @@
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+import { Link, Navigate } from 'react-router';
 import LoginForm from '../components/auth/LoginForm';
 import SignupForm from '../components/auth/SignupForm';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const [signupFormShown, setSignupFormShown] = useState(false);
+  const { user } = useAuth();
+  if (user) return <Navigate to="/" />;
 
   return (
     <div className="container mx-auto max-w-3xl pt-40 pb-25">
       <div className="relative flex items-end justify-center pb-14">
-        <button className="absolute left-0 hidden uppercase hover:underline lg:flex" onClick={() => history.back()}>
+        <Link to="/" className="absolute left-0 hidden uppercase hover:underline lg:flex">
           <ChevronLeft />
           Go back
-        </button>
+        </Link>
         <h1 className="relative font-medium uppercase md:text-2xl">Create account or login</h1>
       </div>
       <div className="flex w-full flex-col gap-8 p-4 md:flex-row">

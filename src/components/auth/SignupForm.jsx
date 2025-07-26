@@ -1,8 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import * as yup from 'yup';
+import supabase from '../../utils/supabase';
 import { emailRegex } from '../../utils/validation';
 import AuthCheckbox from './AuthCheckbox';
 import AuthInput from './AuthInput';
@@ -34,9 +35,24 @@ const SignupForm = () => {
     handleSubmit,
     formState: { errors, isSubmitted },
   } = useForm({ resolver: yupResolver(schema) });
+  const navigate = useNavigate();
 
-  const submit = data => {
-    console.log(data);
+  const submit = async ({ email, password, firstName, lastName }) => {
+    if (!policyAccepted) return;
+    const { data: user, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      return console.error(error);
+    } else if (user) {
+      await supabase.from('profiles').insert([
+        {
+          id: user.user.id,
+          first_name: firstName,
+          last_name: lastName,
+          is_subscribed: subscribe,
+        },
+      ]);
+      navigate('/profile');
+    }
   };
 
   return (

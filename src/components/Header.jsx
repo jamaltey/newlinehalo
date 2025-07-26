@@ -13,7 +13,7 @@ const menuItems = [
   { name: 'Sale', link: '/sale' },
 ];
 
-const forceDarkHeaderRoutes = ['/login'];
+const forceDarkHeaderRoutes = ['/login', '/profile'];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -119,7 +119,7 @@ const Header = () => {
                 <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <Bookmark className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
-                <Link to='/login' className="group-hover:*:opacity-50 hover:*:opacity-100">
+                <Link to="/profile" className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <User className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
                 <Link className="group-hover:*:opacity-50 hover:*:opacity-100">

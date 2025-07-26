@@ -14,7 +14,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<NotFound />} handle={{ is404: true }} id="notFound" />
     </Route>
   ),
-  { basename: import.meta.env.MODE === 'production' ? '/newlinehalo' : undefined }
+  { basename: import.meta.env.MODE === 'production' ? '/newlinehalo/' : undefined }
 );
 
 export default router;

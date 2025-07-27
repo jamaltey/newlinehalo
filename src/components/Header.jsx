@@ -1,17 +1,11 @@
+import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Bookmark, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import { Link, useLocation, useMatches } from 'react-router';
+import { Link, useLocation, useMatches, useRouteLoaderData } from 'react-router';
 import SearchDialog from './SearchDialog';
-
-const menuItems = [
-  { name: 'Men', link: '/men' },
-  { name: 'Women', link: '/women' },
-  { name: 'Accessories', link: '/accesories' },
-  { name: 'Sale', link: '/sale' },
-];
 
 const forceDarkHeaderRoutes = ['/login', '/profile'];
 
@@ -20,13 +14,16 @@ const Header = () => {
   const [isSearchInputVisible, setIsSearchInputVisible] = useState(false);
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openedDropdown, setOpenedDropdown] = useState('');
+
+  const { categories } = useRouteLoaderData('root');
+
   const location = useLocation();
   const matches = useMatches();
-
   const is404 = matches.some(m => m.handle?.is404);
   const forceDarkHeader = is404 || forceDarkHeaderRoutes.includes(location.pathname);
-  const isBgCream = forceDarkHeader || scrolled;
-  const isTextDark = forceDarkHeader || scrolled || mobileOpen;
+  const isBgCream = forceDarkHeader || openedDropdown || scrolled;
+  const isTextDark = isBgCream || mobileOpen;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -48,7 +45,7 @@ const Header = () => {
         layout
         transition={{ duration: 0.2, ease: 'easeOut' }}
         className={clsx(
-          'fixed top-0 z-50 w-full transition-colors duration-100',
+          'fixed top-0 z-50 w-full transition-colors duration-150',
           isBgCream ? 'bg-cream' : 'bg-transparent',
           isTextDark ? 'text-dark' : 'text-white'
         )}
@@ -63,14 +60,15 @@ const Header = () => {
               exit={{ y: -50 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className={clsx(
-                'border border-[#cbcbcb] py-2 text-[11px] font-bold text-white uppercase',
-                forceDarkHeader && 'bg-dark'
+                'border border-[#cbcbcb] py-2 text-[11px] font-bold uppercase',
+                forceDarkHeader && 'bg-dark',
+                isTextDark && !forceDarkHeader ? 'text-dark' : 'text-white'
               )}
             >
               <Marquee autoFill>
-                <div className="ml-10 h-[.5em] w-[.5em] bg-white"></div>
+                <div className={clsx('ml-10 size-[.5em]', isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white')}></div>
                 <span className="mx-8">Free shipping on orders over 50 EUR</span>
-                <div className="mr-10 h-[.5em] w-[.5em] bg-white"></div>
+                <div className={clsx('mr-10 size-[.5em]', isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white')}></div>
               </Marquee>
             </motion.div>
           )}
@@ -79,26 +77,61 @@ const Header = () => {
             key="navbar"
             layout
             className={clsx(
-              'flex items-center justify-between border-b border-[#cbcbcb] px-7 py-4',
+              'flex items-center justify-between border-b border-[#cbcbcb] px-7',
               isBgCream ? 'bg-cream' : 'bg-transparent'
             )}
           >
             {/* Logo */}
-            <Link to="/" className="mx-4 text-xl leading-tight font-bold">
+            <Link to="/" className="mx-4 py-4 text-xl leading-tight font-bold">
               <img className={isTextDark ? undefined : 'invert'} src="icons/logo.svg" alt="HALO" />
             </Link>
 
             {/* Navigation */}
-            <nav className="hidden space-x-4 text-sm font-semibold uppercase lg:flex">
-              {menuItems.map(({ name, link }, index) => (
+            <nav
+              className={clsx(
+                'hidden h-full space-x-3.5 text-[13px] font-semibold uppercase lg:flex',
+                openedDropdown && 'text-dark/50'
+              )}
+            >
+              {categories.map(({ title, uri, subcategories }, index) => (
                 <Fragment key={index}>
-                  <Link to={link}>{name}</Link>
-                  {index !== menuItems.length - 1 && <span>/</span>}
+                  <div
+                    className={openedDropdown === title ? 'text-dark' : undefined}
+                    onMouseOver={() => setOpenedDropdown(title)}
+                    onMouseLeave={() => setOpenedDropdown('')}
+                    to={uri}
+                  >
+                    <Link className="block py-6" to={uri}>
+                      {title}
+                    </Link>
+                    <Transition
+                      show={openedDropdown === title}
+                      className="transition duration-150 ease-in-out data-closed:opacity-0"
+                    >
+                      <div className="bg-cream text-dark absolute inset-x-0 top-full min-h-[50vh] px-9 py-7">
+                        <ul className="grid grid-cols-2 gap-4">
+                          {subcategories.map(({ title, uri }, index) => (
+                            <li key={index}>
+                              <Link
+                                className="hove:text-dark"
+                                onMouseEnter={() => setOpenedDropdown(title)}
+                                onMouseLeave={() => setOpenedDropdown('')}
+                                to={uri}
+                              >
+                                {title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Transition>
+                  </div>
+                  {index !== categories.length - 1 && <span className="py-6">/</span>}
                 </Fragment>
               ))}
             </nav>
 
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center space-x-4">
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center space-x-4 py-4">
               <div className="absolute right-full hidden lg:flex" onMouseOver={() => setIsSearchInputVisible(true)}>
                 <button type="submit">
                   <Search size={18} />
@@ -145,9 +178,9 @@ const Header = () => {
             >
               <div className="w-64 p-6 pt-20">
                 <nav className="mt-8 flex flex-col space-y-4">
-                  {menuItems.map(({ name, link }, index) => (
-                    <Link key={index} to={link} className="text-2xl font-bold uppercase">
-                      {name}
+                  {categories.map(({ title, uri }, index) => (
+                    <Link key={index} to={uri} className="text-2xl font-bold uppercase">
+                      {title}
                     </Link>
                   ))}
                 </nav>

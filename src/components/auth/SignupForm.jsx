@@ -43,14 +43,12 @@ const SignupForm = () => {
     if (error) {
       return console.error(error);
     } else if (user) {
-      await supabase.from('profiles').insert([
-        {
-          id: user.user.id,
-          first_name: firstName,
-          last_name: lastName,
-          is_subscribed: subscribe,
-        },
-      ]);
+      await supabase.from('profiles').insert({
+        id: user.user.id,
+        first_name: firstName,
+        last_name: lastName,
+        is_subscribed: subscribe,
+      });
       navigate('/profile');
     }
   };

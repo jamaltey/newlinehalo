@@ -1,13 +1,25 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router';
+import Loading from './components/Loading';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
+import supabase from './utils/supabase';
+
+const rootLoader = async () => {
+  try {
+    const { data: categories, error } = await supabase.from('categories').select('*, subcategories(*)');
+    if (error) throw error;
+    return { categories };
+  } catch (err) {
+    console.error('Error loading categories:', err.message);
+  }
+};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<MainLayout />}>
+    <Route path="/" element={<MainLayout />} loader={rootLoader} HydrateFallback={Loading} id="root">
       <Route index element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />

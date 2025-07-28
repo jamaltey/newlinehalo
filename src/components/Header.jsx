@@ -5,7 +5,7 @@ import { Bookmark, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { Link, useLocation, useMatches, useRouteLoaderData } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import SearchDialog from './SearchDialog';
 
 const forceDarkHeaderRoutes = ['/login', '/profile'];

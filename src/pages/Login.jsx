@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, Navigate } from 'react-router';
 import LoginForm from '../components/auth/LoginForm';
 import SignupForm from '../components/auth/SignupForm';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
   const [signupFormShown, setSignupFormShown] = useState(false);

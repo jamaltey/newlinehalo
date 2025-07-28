@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import * as yup from 'yup';
-import supabase from '../../utils/supabase';
+import { useAuth } from '../../hooks/useAuth';
 import { emailRegex } from '../../utils/validation';
 import AuthCheckbox from './AuthCheckbox';
 import AuthInput from './AuthInput';
@@ -29,28 +29,19 @@ const schema = yup.object({
 
 const SignupForm = () => {
   const [policyAccepted, setPolicyAccepted] = useState(false);
-  const [subscribe, setSubscribe] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitted },
   } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
-  const submit = async ({ email, password, firstName, lastName }) => {
+  const submit = async formData => {
     if (!policyAccepted) return;
-    const { data: user, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      return console.error(error);
-    } else if (user) {
-      await supabase.from('profiles').insert({
-        id: user.user.id,
-        first_name: firstName,
-        last_name: lastName,
-        is_subscribed: subscribe,
-      });
-      navigate('/profile');
-    }
+    await signUp({ ...formData, isSubscribed });
+    navigate('/profile');
   };
 
   return (
@@ -93,8 +84,8 @@ const SignupForm = () => {
             <Link className="hover:underline">Read the terms and conditions.</Link>
           </span>
         }
-        checked={subscribe}
-        setChecked={setSubscribe}
+        checked={isSubscribed}
+        setChecked={setIsSubscribed}
       />
       <button className="btn w-full" type="submit">
         Create account

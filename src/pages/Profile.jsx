@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const Profile = () => {
   const { user } = useAuth();

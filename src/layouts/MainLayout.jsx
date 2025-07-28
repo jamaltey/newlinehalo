@@ -2,7 +2,7 @@ import { Outlet, ScrollRestoration } from 'react-router';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const MainLayout = () => {
   const { loading } = useAuth();

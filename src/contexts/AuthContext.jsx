@@ -28,25 +28,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signIn = async (email, password, rememberMe = true) => {
+    setLoading(true);
     const client = initSupabase(rememberMe);
     const { data, error } = await client.auth.signInWithPassword({ email, password });
-
     if (error) throw error;
-
     setSession(data.session);
     setUser(data.session.user);
+    setLoading(false);
     return data;
   };
 
   const signOut = async () => {
+    setLoading(true);
     await supabase.auth.signOut();
     setSession(null);
     setUser(null);
+    setLoading(false);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, session, loading, signIn, signOut }}>{!loading && children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, session, loading, signIn, signOut }}>{children}</AuthContext.Provider>;
 };
 
 /**

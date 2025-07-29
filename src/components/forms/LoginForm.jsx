@@ -5,8 +5,8 @@ import { Link } from 'react-router';
 import * as yup from 'yup';
 import { useAuth } from '../../hooks/useAuth';
 import { emailRegex } from '../../utils/validation';
-import AuthCheckbox from './AuthCheckbox';
-import AuthInput from './AuthInput';
+import FormCheckbox from './FormCheckbox';
+import FormInput from './FormInput';
 
 const schema = yup.object({
   email: yup.string().required('This field is required').matches(emailRegex, 'Enter an email address'),
@@ -26,9 +26,9 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
-      <AuthInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
-      <AuthInput type="password" invalid={!!errors.password} register={register} />
-      <AuthCheckbox label="Remember me" checked={rememberMe} setChecked={setRememberMe} />
+      <FormInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
+      <FormInput type="password" invalid={!!errors.password} register={register} />
+      <FormCheckbox label="Remember me" checked={rememberMe} onChange={setRememberMe} />
       <p className="text-right select-none">
         <Link className="text-xs underline">Forgot password?</Link>
       </p>

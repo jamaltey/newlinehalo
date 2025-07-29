@@ -9,7 +9,7 @@ const MainLayout = () => {
 
   return (
     <>
-      {loading && <Loading backdrop />}
+      {loading && <Loading fixed backdrop />}
       <ScrollRestoration />
       <Header />
       <main className="min-h-screen">

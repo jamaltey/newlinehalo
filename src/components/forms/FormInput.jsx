@@ -2,7 +2,7 @@ import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-const AuthInput = ({
+const FormInput = ({
   label = '',
   type = 'text',
   name = '',
@@ -52,4 +52,4 @@ const AuthInput = ({
   );
 };
 
-export default AuthInput;
+export default FormInput;

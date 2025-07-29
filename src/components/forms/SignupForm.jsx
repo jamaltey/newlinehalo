@@ -5,8 +5,8 @@ import { Link, useNavigate } from 'react-router';
 import * as yup from 'yup';
 import { useAuth } from '../../hooks/useAuth';
 import { emailRegex } from '../../utils/validation';
-import AuthCheckbox from './AuthCheckbox';
-import AuthInput from './AuthInput';
+import FormCheckbox from './FormCheckbox';
+import FormInput from './FormInput';
 
 const schema = yup.object({
   email: yup.string().required('This field is required').matches(emailRegex, 'Enter an email address'),
@@ -46,8 +46,8 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
-      <AuthInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
-      <AuthInput
+      <FormInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
+      <FormInput
         type="email"
         invalid={!!errors.repeatEmail}
         errorMessage={errors.repeatEmail?.message}
@@ -55,10 +55,10 @@ const SignupForm = () => {
         name="repeatEmail"
         register={register}
       />
-      <AuthInput type="text" invalid={!!errors.firstName} label="First name" name="firstName" register={register} />
-      <AuthInput type="text" invalid={!!errors.lastName} label="Last name" name="lastName" register={register} />
-      <AuthInput type="password" invalid={!!errors.password} errorMessage={errors.password?.message} register={register} />
-      <AuthInput
+      <FormInput type="text" invalid={!!errors.firstName} label="First name" name="firstName" register={register} />
+      <FormInput type="text" invalid={!!errors.lastName} label="Last name" name="lastName" register={register} />
+      <FormInput type="password" invalid={!!errors.password} errorMessage={errors.password?.message} register={register} />
+      <FormInput
         type="password"
         invalid={!!errors.repeatPassword}
         errorMessage={errors.repeatPassword?.message}
@@ -66,17 +66,17 @@ const SignupForm = () => {
         name="repeatPassword"
         register={register}
       />
-      <AuthCheckbox
+      <FormCheckbox
         label={
           <span>
             I have read and accept the privacy policy. <Link className="hover:underline">Read more</Link>
           </span>
         }
         checked={policyAccepted}
-        setChecked={setPolicyAccepted}
+        onChange={setPolicyAccepted}
         required={isSubmitted}
       />
-      <AuthCheckbox
+      <FormCheckbox
         label={
           <span>
             Yes, I want to subscribe to the HALO newsletter with information about exclusive sales, new collections and much
@@ -85,7 +85,7 @@ const SignupForm = () => {
           </span>
         }
         checked={isSubscribed}
-        setChecked={setIsSubscribed}
+        onChange={setIsSubscribed}
       />
       <button className="btn w-full" type="submit">
         Create account

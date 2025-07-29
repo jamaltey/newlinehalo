@@ -42,6 +42,9 @@ const Header = () => {
 
   return (
     <LayoutGroup>
+      <Transition show={!!openedDropdown} className="z-50 duration-150 ease-in-out data-closed:opacity-0">
+        <div className="fixed inset-0 bg-black opacity-50"></div>
+      </Transition>
       <motion.header
         layout
         transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -84,14 +87,14 @@ const Header = () => {
           >
             {/* Logo */}
             <Link to="/" className="mx-4 py-4 text-xl leading-tight font-bold">
-              <img className={isTextDark ? undefined : 'invert'} src="icons/logo.svg" alt="HALO" />
+              <img className={isTextDark ? undefined : 'invert'} src="/icons/logo.svg" alt="HALO" />
             </Link>
 
             {/* Navigation */}
             <nav
               className={clsx(
                 'hidden h-full space-x-3.5 text-[13px] font-semibold uppercase lg:flex',
-                openedDropdown && 'text-dark/50'
+                openedDropdown && 'text-dark/50 *:transition-colors *:duration-250 *:ease-in-out'
               )}
             >
               {categories.map(({ title, uri, subcategories }, index) => (
@@ -113,12 +116,7 @@ const Header = () => {
                         <ul className="grid grid-cols-2 gap-4">
                           {subcategories.map(({ title, uri }, index) => (
                             <li key={index}>
-                              <Link
-                                className="hove:text-dark"
-                                onMouseEnter={() => setOpenedDropdown(title)}
-                                onMouseLeave={() => setOpenedDropdown('')}
-                                to={uri}
-                              >
+                              <Link className="hover:text-dark" to={uri}>
                                 {title}
                               </Link>
                             </li>
@@ -166,12 +164,12 @@ const Header = () => {
                     <User className="inline-block transition-opacity duration-250" size={18} />
                   </Link>
                   {user && (
-                    <div className="absolute top-8 right-0 hidden pt-10 lg:group-hover/profile:block">
-                      <div className="flex min-w-45 flex-col rounded-[10px] bg-white px-6 py-5">
+                    <div className="absolute top-9 -right-5 hidden pt-10 lg:group-hover/profile:block">
+                      <div className="flex min-w-50 flex-col rounded-[10px] bg-white px-6 py-5">
                         <Link to="/profile" className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white">
                           My Account
                         </Link>
-                        <Link to="/profile" className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white">
+                        <Link to="/orders" className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white">
                           My Purchases
                         </Link>
                         <button

@@ -1,5 +1,6 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router';
 import Loading from './components/Loading';
+import AccountLayout from './layouts/AccountLayout';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -22,7 +23,9 @@ const router = createBrowserRouter(
     <Route path="/" element={<MainLayout />} loader={rootLoader} HydrateFallback={Loading} id="root">
       <Route index element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route element={<AccountLayout />}>
+        <Route path="/profile" element={<Profile />} />
+      </Route>
       <Route path="*" element={<NotFound />} handle={{ is404: true }} id="notFound" />
     </Route>
   ),

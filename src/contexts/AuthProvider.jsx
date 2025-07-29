@@ -1,9 +1,8 @@
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import supabase, { initSupabase } from '../utils/supabase';
+import AuthContext from './AuthContext';
 
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     const user = data.user;
 
     if (user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
+      const { error: profileError } = await supabase.from('profiles').upsert({
         id: user.id,
         first_name: firstName,
         last_name: lastName,
@@ -81,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   };
 
-  return <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>{children}</AuthContext.Provider>;
+  return <AuthContext value={{ user, session, loading, signUp, signIn, signOut }}>{children}</AuthContext>;
 };
 
-export default AuthContext;
+export default AuthProvider;

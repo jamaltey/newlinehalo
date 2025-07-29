@@ -1,8 +1,8 @@
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router';
-import LoginForm from '../components/auth/LoginForm';
-import SignupForm from '../components/auth/SignupForm';
+import LoginForm from '../components/forms/LoginForm';
+import SignupForm from '../components/forms/SignupForm';
 import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {

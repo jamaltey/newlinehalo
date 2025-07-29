@@ -2,9 +2,11 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import Loading from './components/Loading';
 import AccountLayout from './layouts/AccountLayout';
 import MainLayout from './layouts/MainLayout';
+import Favorites from './pages/Favorites';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
+import Orders from './pages/Orders';
 import Profile from './pages/Profile';
 import supabase from './utils/supabase';
 
@@ -33,6 +35,8 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route element={<AccountLayout />}>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/favorites" element={<Favorites />} />
       </Route>
       <Route path="*" element={<NotFound />} handle={{ is404: true }} id="notFound" />
     </Route>

@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 const Login = () => {
   const [signupFormShown, setSignupFormShown] = useState(false);
   const { user } = useAuth();
+
   if (user) return <Navigate to="/" />;
 
   return (

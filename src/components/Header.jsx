@@ -4,11 +4,9 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Bookmark, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import { Link, useLocation, useMatches, useRouteLoaderData } from 'react-router';
+import { Link, useLocation, useRouteLoaderData } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
 import SearchDialog from './SearchDialog';
-
-const forceDarkHeaderRoutes = ['/login', '/profile'];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -16,15 +14,29 @@ const Header = () => {
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openedDropdown, setOpenedDropdown] = useState('');
+  const [pageHasHero, setPageHasHero] = useState(false);
   const { categories } = useRouteLoaderData('root');
   const { user, signOut } = useAuth();
 
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setPageHasHero(!!document.querySelector('#hero'));
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    setPageHasHero(!!document.querySelector('#hero'));
+
+    return () => observer.disconnect();
+  }, []);
+
   const location = useLocation();
-  const matches = useMatches();
-  const is404 = matches.some(m => m.handle?.is404);
-  const forceDarkHeader = is404 || forceDarkHeaderRoutes.includes(location.pathname);
-  const isBgCream = forceDarkHeader || openedDropdown || scrolled;
-  const isTextDark = isBgCream || mobileOpen;
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -32,13 +44,12 @@ const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
-
   const handleSearchSubmit = e => {
     e.preventDefault();
   };
+
+  const isBgCream = !pageHasHero || openedDropdown || scrolled;
+  const isTextDark = isBgCream || mobileOpen;
 
   return (
     <LayoutGroup>
@@ -68,22 +79,22 @@ const Header = () => {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className={clsx(
                 'border border-[#cbcbcb] py-2 text-[11px] font-bold uppercase',
-                forceDarkHeader && 'bg-dark',
-                isTextDark && !forceDarkHeader ? 'text-dark' : 'text-white'
+                pageHasHero && isTextDark ? 'text-dark' : 'text-white',
+                !pageHasHero && 'bg-dark'
               )}
             >
               <Marquee autoFill>
                 <div
                   className={clsx(
                     'ml-10 size-[.5em]',
-                    isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white'
+                    pageHasHero && isTextDark ? 'bg-dark' : 'bg-white'
                   )}
                 ></div>
                 <span className="mx-8">Free shipping on orders over 50 EUR</span>
                 <div
                   className={clsx(
                     'mr-10 size-[.5em]',
-                    isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white'
+                    pageHasHero && isTextDark ? 'bg-dark' : 'bg-white'
                   )}
                 ></div>
               </Marquee>

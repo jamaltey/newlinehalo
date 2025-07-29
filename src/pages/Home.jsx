@@ -4,7 +4,7 @@ import ProductFeatureCard from '../components/ProductFeatureCard';
 const Home = () => {
   return (
     <div className="uppercase">
-      <div className="relative h-[90vh]">
+      <div className="relative h-[90vh]" id="hero">
         <img className="h-full w-full object-cover" src="images/homepage/hero.jpg" alt="Hero" />
         <div className="absolute bottom-0 flex w-full flex-col items-start justify-between gap-y-4 p-8 lg:flex-row">
           <h2 className="text-[2rem] font-bold text-white md:text-[2.5rem]">For any transition</h2>

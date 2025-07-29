@@ -9,7 +9,6 @@ const FormInput = ({
   placeholder = '',
   invalid = false,
   errorMessage = 'This field is required',
-  className = '',
   register = () => {},
 }) => {
   const [passwordShown, setPasswordShown] = useState(false);

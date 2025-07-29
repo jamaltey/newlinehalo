@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 
 const FormCheckbox = ({ label, checked, onChange, required = false }) => {
   return (
-    <Field className="flex cursor-pointer items-start gap-2">
+    <Field className="flex items-start gap-2 *:cursor-pointer has-[label:hover]:*:border-[#ff6600]">
       <Checkbox
         checked={checked}
         onChange={onChange}

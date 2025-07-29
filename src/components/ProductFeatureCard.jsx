@@ -17,11 +17,26 @@ const ProductFeatureCard = ({
   return (
     <div className={clsx('relative uppercase', textBlack ? 'text-black' : 'text-white', className)}>
       <Link to={link} aria-label={label || title}>
-        <img className="h-full w-full object-cover" src={imageSrc} loading="lazy" alt={label || title || 'Image'}></img>
-        {title && <h4 className="absolute top-1/2 left-1/2 -translate-1/2 text-[2rem] font-bold">{title}</h4>}
+        <img
+          className="h-full w-full object-cover"
+          src={imageSrc}
+          loading="lazy"
+          alt={label || title || 'Image'}
+        ></img>
+        {title && (
+          <h4 className="absolute top-1/2 left-1/2 -translate-1/2 text-[2rem] font-bold">
+            {title}
+          </h4>
+        )}
         <div className="absolute bottom-0 flex w-full items-end p-7.5">
           {label && (
-            <p className={labelProminent ? 'text-[2rem] font-bold' : 'text-[13px] font-medium md:text-[15px]'}>{label}</p>
+            <p
+              className={
+                labelProminent ? 'text-[2rem] font-bold' : 'text-[13px] font-medium md:text-[15px]'
+              }
+            >
+              {label}
+            </p>
           )}
           {showLinkIcon && (
             <img

@@ -10,7 +10,9 @@ import supabase from './utils/supabase';
 
 const rootLoader = async () => {
   try {
-    const { data: categories, error } = await supabase.from('categories').select('*, subcategories(*)');
+    const { data: categories, error } = await supabase
+      .from('categories')
+      .select('*, subcategories(*)');
     if (error) throw error;
     return { categories };
   } catch (err) {
@@ -20,7 +22,13 @@ const rootLoader = async () => {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<MainLayout />} loader={rootLoader} HydrateFallback={Loading} id="root">
+    <Route
+      path="/"
+      element={<MainLayout />}
+      loader={rootLoader}
+      HydrateFallback={Loading}
+      id="root"
+    >
       <Route index element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route element={<AccountLayout />}>

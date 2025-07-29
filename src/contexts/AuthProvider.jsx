@@ -80,7 +80,11 @@ const AuthProvider = ({ children }) => {
     setLoading(false);
   };
 
-  return <AuthContext value={{ user, session, loading, signUp, signIn, signOut }}>{children}</AuthContext>;
+  return (
+    <AuthContext value={{ user, session, loading, signUp, signIn, signOut }}>
+      {children}
+    </AuthContext>
+  );
 };
 
 export default AuthProvider;

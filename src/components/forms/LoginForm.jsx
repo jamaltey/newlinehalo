@@ -9,7 +9,10 @@ import FormCheckbox from './FormCheckbox';
 import FormInput from './FormInput';
 
 const schema = yup.object({
-  email: yup.string().required('This field is required').matches(emailRegex, 'Enter an email address'),
+  email: yup
+    .string()
+    .required('This field is required')
+    .matches(emailRegex, 'Enter an email address'),
   password: yup.string().required('This field is required'),
 });
 
@@ -26,7 +29,12 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
-      <FormInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
+      <FormInput
+        type="email"
+        invalid={!!errors.email}
+        errorMessage={errors.email?.message}
+        register={register}
+      />
       <FormInput type="password" invalid={!!errors.password} register={register} />
       <FormCheckbox label="Remember me" checked={rememberMe} onChange={setRememberMe} />
       <p className="text-right select-none">

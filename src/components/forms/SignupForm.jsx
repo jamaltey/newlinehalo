@@ -9,7 +9,10 @@ import FormCheckbox from './FormCheckbox';
 import FormInput from './FormInput';
 
 const schema = yup.object({
-  email: yup.string().required('This field is required').matches(emailRegex, 'Enter an email address'),
+  email: yup
+    .string()
+    .required('This field is required')
+    .matches(emailRegex, 'Enter an email address'),
   repeatEmail: yup
     .string()
     .required('This field is required')
@@ -46,7 +49,12 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
-      <FormInput type="email" invalid={!!errors.email} errorMessage={errors.email?.message} register={register} />
+      <FormInput
+        type="email"
+        invalid={!!errors.email}
+        errorMessage={errors.email?.message}
+        register={register}
+      />
       <FormInput
         type="email"
         invalid={!!errors.repeatEmail}
@@ -55,9 +63,26 @@ const SignupForm = () => {
         name="repeatEmail"
         register={register}
       />
-      <FormInput type="text" invalid={!!errors.firstName} label="First name" name="firstName" register={register} />
-      <FormInput type="text" invalid={!!errors.lastName} label="Last name" name="lastName" register={register} />
-      <FormInput type="password" invalid={!!errors.password} errorMessage={errors.password?.message} register={register} />
+      <FormInput
+        type="text"
+        invalid={!!errors.firstName}
+        label="First name"
+        name="firstName"
+        register={register}
+      />
+      <FormInput
+        type="text"
+        invalid={!!errors.lastName}
+        label="Last name"
+        name="lastName"
+        register={register}
+      />
+      <FormInput
+        type="password"
+        invalid={!!errors.password}
+        errorMessage={errors.password?.message}
+        register={register}
+      />
       <FormInput
         type="password"
         invalid={!!errors.repeatPassword}
@@ -69,7 +94,8 @@ const SignupForm = () => {
       <FormCheckbox
         label={
           <span>
-            I have read and accept the privacy policy. <Link className="hover:underline">Read more</Link>
+            I have read and accept the privacy policy.{' '}
+            <Link className="hover:underline">Read more</Link>
           </span>
         }
         checked={policyAccepted}
@@ -79,8 +105,8 @@ const SignupForm = () => {
       <FormCheckbox
         label={
           <span>
-            Yes, I want to subscribe to the HALO newsletter with information about exclusive sales, new collections and much
-            more. You can unsubscribe from the newsletter at any time.{' '}
+            Yes, I want to subscribe to the HALO newsletter with information about exclusive sales,
+            new collections and much more. You can unsubscribe from the newsletter at any time.{' '}
             <Link className="hover:underline">Read the terms and conditions.</Link>
           </span>
         }

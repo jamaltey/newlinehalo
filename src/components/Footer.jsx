@@ -27,7 +27,8 @@ const NewsletterSignup = () => {
     <>
       {success ? (
         <p className="mb-5 text-xl leading-5 font-bold">
-          Thanks! You've successfully signed up for the newsletter and will receive an email shortly.
+          Thanks! You've successfully signed up for the newsletter and will receive an email
+          shortly.
         </p>
       ) : (
         <form onSubmit={submit}>
@@ -42,7 +43,9 @@ const NewsletterSignup = () => {
           />
 
           {/* Email Error (initially hidden) */}
-          {emailError && <p className="mt-1 text-xs text-red-600">Please provide a valid email address</p>}
+          {emailError && (
+            <p className="mt-1 text-xs text-red-600">Please provide a valid email address</p>
+          )}
 
           {/* Terms Checkbox (initially hidden) */}
           {email && (
@@ -55,7 +58,10 @@ const NewsletterSignup = () => {
               />
               <p className="font-medium">
                 <span>I have read and accept the </span>
-                <a href="https://www.newlinehalo.com/newsletter-terms-conditions.html" className="underline">
+                <a
+                  href="https://www.newlinehalo.com/newsletter-terms-conditions.html"
+                  className="underline"
+                >
                   terms and conditions
                 </a>
                 <span> for the HALO newsletter</span>
@@ -65,7 +71,9 @@ const NewsletterSignup = () => {
 
           {/* Checkbox Error (initially hidden) */}
           {!termsAccepted && email && (
-            <p className="mt-1 text-xs text-red-600">Please accept terms and conditions in order to continue</p>
+            <p className="mt-1 text-xs text-red-600">
+              Please accept terms and conditions in order to continue
+            </p>
           )}
 
           {email ? (
@@ -181,7 +189,9 @@ const Footer = () => {
             ({ title, links }, index) =>
               index <= 2 && (
                 <div key={index} className="w-1/3 border-r border-[#cbcbcb] p-7.5 text-[11px]">
-                  <h6 className="mb-5 flex w-full items-center justify-between font-bold uppercase">{title}</h6>
+                  <h6 className="mb-5 flex w-full items-center justify-between font-bold uppercase">
+                    {title}
+                  </h6>
                   <ul className="flex flex-col gap-2">
                     {links.map(({ title, url }, index) => (
                       <li key={index}>
@@ -217,14 +227,22 @@ const Footer = () => {
           <div>
             <h2 className="mb-2 font-semibold uppercase">Follow Us</h2>
             <div className="flex gap-4">
-              <a href="https://www.facebook.com/newline.halo/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.facebook.com/newline.halo/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img
                   src="https://www.newlinehalo.com/on/demandware.static/-/Sites-halo-Library/default/dwc49e2550/footer/facebook.svg"
                   alt="Facebook"
                   className="size-6"
                 />
               </a>
-              <a href="https://www.instagram.com/newline.halo/?hl=da" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.instagram.com/newline.halo/?hl=da"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img
                   src="https://www.newlinehalo.com/on/demandware.static/-/Sites-halo-Library/default/dw634be4e9/footer/instagram.svg"
                   alt="Instagram"
@@ -252,12 +270,20 @@ const Footer = () => {
                 <a href="#" className="block px-4 py-2 text-sm hover:bg-black hover:text-white">
                   International
                 </a>
-                <a href="https://www.newlinehalo.dk/" className="block px-4 py-2 text-sm hover:bg-black hover:text-white">
+                <a
+                  href="https://www.newlinehalo.dk/"
+                  className="block px-4 py-2 text-sm hover:bg-black hover:text-white"
+                >
                   Denmark
                 </a>
               </div>
             </div>
-            <a href="http://www.thornico.com/" target="_blank" rel="noopener noreferrer" className="ml-4">
+            <a
+              href="http://www.thornico.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-4"
+            >
               <img src="icons/thornico-logo.svg" alt="thornico" className="h-6" />
             </a>
           </div>

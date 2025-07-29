@@ -16,7 +16,12 @@ const FormCheckbox = ({ label, checked, onChange, required = false }) => {
       >
         <Check color="#fff" strokeWidth={5} />
       </Checkbox>
-      <Label className={clsx('cursor-pointer text-sm leading-tight select-none', required && !checked && 'text-[#d03a3a]')}>
+      <Label
+        className={clsx(
+          'cursor-pointer text-sm leading-tight select-none',
+          required && !checked && 'text-[#d03a3a]'
+        )}
+      >
         {label}
       </Label>
     </Field>

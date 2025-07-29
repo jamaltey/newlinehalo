@@ -30,7 +30,11 @@ export const useProfile = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
 
       if (error) setError(error);
       else setProfile(keysToCamel(data));
@@ -43,7 +47,12 @@ export const useProfile = () => {
     setLoading(true);
     updatedFields = keysToSnake(updatedFields);
 
-    const { data, error } = await supabase.from('profiles').update(updatedFields).eq('id', user.id).select().single();
+    const { data, error } = await supabase
+      .from('profiles')
+      .update(updatedFields)
+      .eq('id', user.id)
+      .select()
+      .single();
 
     if (error) {
       setError(error);

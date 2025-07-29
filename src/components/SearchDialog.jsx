@@ -24,7 +24,11 @@ const SearchDialog = ({ open, setOpen }) => {
   };
 
   return (
-    <Dialog className="bg-cream text-dark fixed inset-0 z-50 lg:hidden" open={open} onClose={() => setOpen(false)}>
+    <Dialog
+      className="bg-cream text-dark fixed inset-0 z-50 lg:hidden"
+      open={open}
+      onClose={() => setOpen(false)}
+    >
       <DialogPanel className="p-4">
         <div className="flex w-full justify-end">
           <button className="text-[#212529]" onClick={() => setOpen(false)} type="button">

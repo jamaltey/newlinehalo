@@ -42,7 +42,10 @@ const Header = () => {
 
   return (
     <LayoutGroup>
-      <Transition show={!!openedDropdown} className="z-50 duration-150 ease-in-out data-closed:opacity-0">
+      <Transition
+        show={!!openedDropdown}
+        className="z-50 duration-150 ease-in-out data-closed:opacity-0"
+      >
         <div className="fixed inset-0 bg-black opacity-50"></div>
       </Transition>
       <motion.header
@@ -70,9 +73,19 @@ const Header = () => {
               )}
             >
               <Marquee autoFill>
-                <div className={clsx('ml-10 size-[.5em]', isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white')}></div>
+                <div
+                  className={clsx(
+                    'ml-10 size-[.5em]',
+                    isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white'
+                  )}
+                ></div>
                 <span className="mx-8">Free shipping on orders over 50 EUR</span>
-                <div className={clsx('mr-10 size-[.5em]', isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white')}></div>
+                <div
+                  className={clsx(
+                    'mr-10 size-[.5em]',
+                    isTextDark && !forceDarkHeader ? 'bg-dark' : 'bg-white'
+                  )}
+                ></div>
               </Marquee>
             </motion.div>
           )}
@@ -166,10 +179,16 @@ const Header = () => {
                   {user && (
                     <div className="absolute top-9 -right-5 hidden pt-10 lg:group-hover/profile:block">
                       <div className="flex min-w-50 flex-col rounded-[10px] bg-white px-6 py-5">
-                        <Link to="/profile" className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white">
+                        <Link
+                          to="/profile"
+                          className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white"
+                        >
                           My Account
                         </Link>
-                        <Link to="/orders" className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white">
+                        <Link
+                          to="/orders"
+                          className="hover:bg-dark text-dark block px-4 py-2.5 text-sm hover:text-white"
+                        >
                           My Purchases
                         </Link>
                         <button
@@ -187,7 +206,11 @@ const Header = () => {
                   <ShoppingBag className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
               </div>
-              <button className="lg:hidden" type="button" onClick={() => setMobileOpen(!mobileOpen)}>
+              <button
+                className="lg:hidden"
+                type="button"
+                onClick={() => setMobileOpen(!mobileOpen)}
+              >
                 {mobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
             </div>

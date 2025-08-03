@@ -5,9 +5,14 @@ const Home = () => {
   return (
     <div className="uppercase">
       <div className="relative h-[90vh]" id="hero">
-        <img className="h-full w-full object-cover" src="images/homepage/hero.jpg" alt="Hero" />
+        <video className="hidden lg:block" loading="lazy" loop autoPlay muted>
+          <source src="https://player.vimeo.com/progressive_redirect/playback/1105089822/rendition/1080p/file.mp4?loc=external&signature=00b19cf6de335177a10b3a26abab47f2ad376d3ed208539551306db4411b391a" />
+        </video>
+        <video className="h-full object-cover lg:hidden" loading="lazy" loop autoPlay muted>
+          <source src="https://player.vimeo.com/progressive_redirect/playback/1105089822/rendition/1080p/file.mp4?loc=external&signature=00b19cf6de335177a10b3a26abab47f2ad376d3ed208539551306db4411b391a" />
+        </video>
         <div className="absolute bottom-0 flex w-full flex-col items-start justify-between gap-y-4 p-8 lg:flex-row">
-          <h2 className="text-[2rem] font-bold text-white md:text-[2.5rem]">For any transition</h2>
+          <h2 className="text-[2rem] font-bold text-white md:text-[2.5rem]">Back to training</h2>
           <Link className="btn text-dark text-[15px] leading-[17.25px] [--btn-bg:#fff]">
             Shop the news
           </Link>

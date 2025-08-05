@@ -1,6 +1,6 @@
 import { ChevronDown, ListFilter } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useRouteLoaderData } from 'react-router';
+import { Link, useParams, useRouteLoaderData } from 'react-router';
 import Loading from '../components/Loading';
 import ProductCard from '../components/ProductCard';
 import supabase from '../utils/supabase';
@@ -21,7 +21,6 @@ const Category = () => {
         .find(sub => sub.id === id || sub.uri === id),
     [categories, id]
   );
-  console.log(id);
 
   useEffect(() => {
     const imageTypes = [id.match(/men|women/)?.[0], 'packshot'].filter(Boolean);
@@ -78,13 +77,17 @@ const Category = () => {
               <ChevronDown size={16} />
             </button>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.lnegth ? (
-              products.map((product, index) => <ProductCard {...product} key={index} />)
-            ) : (
-              <p className="p-9 text-center">No products found</p>
-            )}
-          </div>
+          {products.length ? (
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {products.map((product, index) => (
+                <ProductCard {...product} key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex min-h-[70vh] items-center justify-center">
+              <h2 className="text-4xl font-medium">No products found</h2>
+            </div>
+          )}
           <div className="space-y-3 p-9 text-center">
             <p className="text-xs font-bold uppercase">
               Showing {products.length} of {totalProductCount}
@@ -101,8 +104,11 @@ const Category = () => {
           </div>
         </>
       ) : (
-        <div>
-          <p className="p-9 text-center">No products found</p>
+        <div className="flex min-h-[70vh] flex-col items-center justify-center">
+          <h2 className="mb-4 text-4xl font-medium">No products found</h2>
+          <Link to="/" className="btn text-dark [--btn-bg:#fff]">
+            Back to home
+          </Link>
         </div>
       )}
     </div>

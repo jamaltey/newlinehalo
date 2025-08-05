@@ -2,9 +2,9 @@ import { Link } from 'react-router';
 
 const NotFound = () => {
   return (
-    <div className="mt-50">
+    <div className="pt-40 pb-20">
       <div className="align-center flex w-full flex-wrap">
-        <div className="space-y-4 p-8 sm:w-1/2">
+        <div className="space-y-4 p-8 md:w-1/2">
           <h1 className="pb-8 text-4xl font-medium">404</h1>
           <p>We can't seem to find the page you're looking for.</p>
           <p>
@@ -14,8 +14,8 @@ const NotFound = () => {
             GO HOME »
           </Link>
         </div>
-        <div className="sm:w-1/2">
-          <img src="images/404.jpg" alt="" />
+        <div className="md:w-1/2">
+          <img src="/images/404.jpg" alt="" />
         </div>
       </div>
     </div>

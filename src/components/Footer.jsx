@@ -209,7 +209,7 @@ const Footer = () => {
         <div className="text-dark w-full px-5 py-5 text-[11px] md:order-first md:w-3/12 md:p-7.5">
           {/* Logo */}
           <div className="mb-7 md:mb-10.5">
-            <img src="icons/logo.svg" alt="Halo Logo" className="md:w-[93px]" />
+            <img src="/icons/logo.svg" alt="Halo Logo" className="md:w-[93px]" />
           </div>
 
           {/* Address Info */}
@@ -284,7 +284,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="ml-4"
             >
-              <img src="icons/thornico-logo.svg" alt="thornico" className="h-6" />
+              <img src="/icons/thornico-logo.svg" alt="thornico" className="h-6" />
             </a>
           </div>
         </div>

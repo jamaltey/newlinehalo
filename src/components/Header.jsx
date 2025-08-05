@@ -13,8 +13,9 @@ const Header = () => {
   const [isSearchInputVisible, setIsSearchInputVisible] = useState(false);
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openedDropdown, setOpenedDropdown] = useState('');
   const [pageHasHero, setPageHasHero] = useState(false);
+  const [openedDropdown, setOpenedDropdown] = useState('');
+  const location = useLocation();
   const { categories } = useRouteLoaderData('root');
   const { user, signOut } = useAuth();
 
@@ -33,7 +34,6 @@ const Header = () => {
     return () => observer.disconnect();
   }, []);
 
-  const location = useLocation();
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
@@ -101,6 +101,7 @@ const Header = () => {
             </motion.div>
           )}
 
+          {/* Navbar */}
           <motion.div
             key="navbar"
             layout
@@ -138,9 +139,9 @@ const Header = () => {
                     >
                       <div className="bg-cream text-dark absolute inset-x-0 top-full min-h-[50vh] px-9 py-7">
                         <ul className="grid grid-cols-2 gap-4">
-                          {subcategories.map(({ title, uri }, index) => (
+                          {subcategories.map(({ title, id }, index) => (
                             <li key={index}>
-                              <Link className="hover:text-dark" to={uri}>
+                              <Link className="hover:text-dark" to={`/${id}`}>
                                 {title}
                               </Link>
                             </li>

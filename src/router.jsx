@@ -2,6 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import Loading from './components/Loading';
 import AccountLayout from './layouts/AccountLayout';
 import MainLayout from './layouts/MainLayout';
+import Category from './pages/Category';
 import Favorites from './pages/Favorites';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -14,7 +15,8 @@ const rootLoader = async () => {
   try {
     const { data: categories, error } = await supabase
       .from('categories')
-      .select('*, subcategories(*)');
+      .select('*, subcategories(*)')
+      .order('image', { ascending: false, nullsFirst: false });
     if (error) throw error;
     return { categories };
   } catch (err) {
@@ -32,6 +34,7 @@ const router = createBrowserRouter(
       id="root"
     >
       <Route index element={<Home />} />
+      <Route path="/:id" element={<Category />} />
       <Route path="/login" element={<Login />} />
       <Route element={<AccountLayout />}>
         <Route path="/profile" element={<Profile />} />

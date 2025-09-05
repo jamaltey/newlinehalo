@@ -11,7 +11,6 @@ import { createContext } from 'react';
  * @property {(params: { email: string, password: string, firstName: string, lastName: string, isSubscribed?: boolean }) => Promise<{ user: User, session: Session }>} signUp - Function to sign up a new user.
  * @property {(params: { email: string, password: string, rememberMe?: boolean }) => Promise<{ user: User, session: Session }>} signIn - Function to sign in an existing user.
  * @property {() => Promise<void>} signOut - Function to sign out the current user.
- *
  */
 
 /** @type {React.Context<AuthContextValue>} */

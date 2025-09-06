@@ -10,8 +10,10 @@ const Category = () => {
   const [totalProductCount, setTotalProductCount] = useState(0);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const { id } = useParams();
   const { categories } = useRouteLoaderData('root');
+
   const category = useMemo(
     () =>
       categories.find(cat => cat.id === id) ||
@@ -22,31 +24,37 @@ const Category = () => {
     [categories, id]
   );
 
+  const imageTypes = [id.match(/men|women/)?.[0], 'packshot'].filter(Boolean);
+
+  const getProducts = async (from = 0, to = 31) => {
+    const {
+      data: products,
+      error,
+      count,
+    } = await supabase
+      .from('products')
+      .select('*, product_images(*), product_colors(color_id)', { count: 'exact' })
+      .in('product_images.type', imageTypes)
+      .or(`category_id.eq.${id}, subcategory_id.eq.${id}`)
+      .range(from, to);
+    if (error) throw error;
+    setTotalProductCount(count);
+    setLoading(false);
+    return products;
+  };
+
   useEffect(() => {
-    const imageTypes = [id.match(/men|women/)?.[0], 'packshot'].filter(Boolean);
-    const getProducts = async () => {
-      try {
-        const {
-          data: products,
-          error,
-          count,
-        } = await supabase
-          .from('products')
-          .select('*, product_images(*), product_colors(color_id)', { count: 'exact' })
-          .in('product_images.type', imageTypes)
-          .or(`category_id.eq.${id}, subcategory_id.eq.${id}`)
-          .range(0, 31);
-        if (error) throw error;
-        setTotalProductCount(count);
-        setProducts(products);
-      } catch (err) {
-        console.error('Error loading products:', err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getProducts();
+    getProducts().then(setProducts);
   }, [id]);
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    const from = products.length;
+    const to = from + 31;
+    const newProducts = await getProducts(from, to);
+    setProducts(prev => [...prev, ...newProducts]);
+    setLoadingMore(false);
+  };
 
   if (!category) return <NotFound />;
 
@@ -92,14 +100,19 @@ const Category = () => {
             <p className="text-xs font-bold uppercase">
               Showing {products.length} of {totalProductCount}
             </p>
-            {totalProductCount > products.length && (
-              <button className="btn text-dark [--btn-bg:#fff]">
+            {totalProductCount > products.length && !loadingMore && (
+              <button onClick={loadMore} className="btn text-dark [--btn-bg:#fff]">
                 Load more (
                 {totalProductCount - products.length < 32
                   ? totalProductCount - products.length
                   : 32}
                 )
               </button>
+            )}
+            {loadingMore && (
+              <div className="relative mt-5 min-h-14">
+                <Loading />
+              </div>
             )}
           </div>
         </>

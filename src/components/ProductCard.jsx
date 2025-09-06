@@ -22,7 +22,7 @@ const ProductCard = ({
       data-product-slug={slug}
       data-product-id={id}
     >
-      <div className="relative h-full border-b border-[#cbcbcb]">
+      <div className="relative h-[66.6vw] border-b border-[#cbcbcb] lg:h-[44.4vw] xl:h-[33.3vw]">
         <div className="absolute top-2 left-2 flex flex-col items-start gap-1 text-[9px] lg:text-[11px]">
           {tags.map(tag => (
             <span className="rounded-xl bg-white px-2 py-1" key={tag}>
@@ -31,15 +31,14 @@ const ProductCard = ({
           ))}
         </div>
         <Swiper
-          className="group cursor-pointer"
+          className="group h-full cursor-pointer"
           modules={[Navigation]}
           navigation={{ prevEl: '.btn-prev', nextEl: '.btn-next', disabledClass: 'btn-disabled' }}
           spaceBetween={10}
         >
           {product_images.map(image => (
-            <SwiperSlide key={image.id}>
+            <SwiperSlide className="*:h-full *:w-full" key={image.id}>
               <LazyLoadImage
-                className="h-full w-full object-contain"
                 src={`${image.url}?sw=700&sh=930&q=80`}
                 placeholderSrc={`${image.url}?sw=70&sh=93&q=80`}
                 alt={name}

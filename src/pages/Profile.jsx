@@ -8,7 +8,7 @@ const Profile = () => {
   const { user } = useAuth();
   const { profile, updateProfile, loading } = useProfile();
 
-  if (!user || !profile) return <Navigate to="/login" />;
+  if (!user || !(profile || loading)) return <Navigate to="/login" />;
 
   if (loading) {
     return (

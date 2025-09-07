@@ -160,7 +160,7 @@ const Category = () => {
               </button>
             )}
             {loadingMore && (
-              <div className="relative mt-5 min-h-14">
+              <div className="relative mx-auto size-12">
                 <Loading />
               </div>
             )}

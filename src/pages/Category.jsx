@@ -35,7 +35,7 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [filtersShown, setFiltersShown] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   const category = useMemo(
@@ -117,14 +117,14 @@ const Category = () => {
           <div className="text-dark flex justify-between border-b border-[#cbcbcb] p-5 text-[11px] font-bold uppercase">
             <span>{totalProductCount} products</span>
             <button
-              onClick={() => setFiltersShown(true)}
+              onClick={() => setFiltersOpen(true)}
               className="hidden items-center gap-px md:flex"
             >
               <span className="leading-snug">FILTERS</span>
               <ListFilter size={16} />
             </button>
             <button
-              onClick={() => setFiltersShown(true)}
+              onClick={() => setFiltersOpen(true)}
               className="btn fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-1 p-2.5 md:hidden"
             >
               <span className="leading-snug">FILTERS</span>
@@ -174,13 +174,21 @@ const Category = () => {
           </Link>
         </div>
       )}
-      <Dialog open={filtersShown} onClose={() => setFiltersShown(false)}>
-        <DialogBackdrop className="fixed inset-0 z-50 bg-[#817d734c]" />
-        <div className="fixed inset-0 z-50 flex w-screen items-end justify-center p-4 md:items-center md:justify-end">
+      <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)}>
+        <DialogBackdrop
+          transition
+          className={clsx(
+            'fixed inset-0 z-40 bg-[#817d734c]',
+            'duration-150 data-closed:opacity-0'
+          )}
+        />
+        <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center md:justify-end">
           <DialogPanel
+            transition
             className={clsx(
-              'bg-cream flex flex-col rounded-lg p-7.5 uppercase [box-shadow:0_.313em_.938em_#00000080]',
-              'h-[60vh] w-[95vw] md:h-[95vh] md:w-[40vw] lg:w-[25vw]'
+              'm-4 h-[60vh] w-[95vw] data-closed:m-0 md:h-[95vh] md:w-[40vw] lg:w-[25vw]',
+              'duration-300 ease-in-out max-md:data-closed:translate-y-full md:data-closed:translate-x-full',
+              'bg-cream flex flex-col rounded-lg p-7.5 uppercase [box-shadow:0_.313em_.938em_#00000080]'
             )}
           >
             <div className="flex justify-between py-4">
@@ -247,7 +255,7 @@ const Category = () => {
             >
               Clear Filters
             </button>
-            <CloseButton className="btn w-full text-sm" onClick={() => setFiltersShown(false)}>
+            <CloseButton className="btn w-full text-sm" onClick={() => setFiltersOpen(false)}>
               Show results ({totalProductCount})
             </CloseButton>
           </DialogPanel>

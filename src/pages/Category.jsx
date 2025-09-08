@@ -18,6 +18,13 @@ const PRICE_RANGES = [
 
 const DEFAULT_FILTERS = { priceRanges: [], onSale: false };
 
+const SORT_OPTIONS = [
+  { id: 'recommended', title: 'The top picks', label: 'We recommend' },
+  { id: 'newest', title: 'The newest arrivals', label: 'Newest' },
+  { id: 'price_asc', title: 'Lowest price', label: 'Low to High' },
+  { id: 'price_desc', title: 'Highest price', label: 'High to Low' },
+];
+
 const areArraySetsEqual = (a, b) => {
   if (a.length !== b.length) return false;
   const setA = new Set(a);
@@ -37,6 +44,8 @@ const Category = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [sort, setSort] = useState('recommended');
 
   const category = useMemo(
     () =>
@@ -67,6 +76,15 @@ const Category = () => {
       query = query.not('price_old', 'is', null);
     }
 
+    // Apply sorting
+    if (sort === 'newest') {
+      query = query.order('created_at', { ascending: false });
+    } else if (sort === 'price_asc') {
+      query = query.order('price_current', { ascending: true });
+    } else if (sort === 'price_desc') {
+      query = query.order('price_current', { ascending: false });
+    }
+
     const { data: products, error, count } = await query.range(from, to);
     if (error) throw error;
     setTotalProductCount(count);
@@ -77,6 +95,7 @@ const Category = () => {
   useEffect(() => {
     // Reset filters when category changes, but only if not already default
     setFilters(prev => (areFiltersEqual(prev, DEFAULT_FILTERS) ? prev : DEFAULT_FILTERS));
+    setSort('recommended');
   }, [id]);
 
   useEffect(() => {
@@ -85,7 +104,7 @@ const Category = () => {
     getProducts()
       .then(setProducts)
       .catch(() => setLoading(false));
-  }, [id, filters]);
+  }, [id, filters, sort]);
 
   const loadMore = async () => {
     setLoadingMore(true);
@@ -130,8 +149,8 @@ const Category = () => {
               <span className="leading-snug">FILTERS</span>
               <ListFilter size={16} />
             </button>
-            <button className="flex items-center gap-1">
-              <span className="uppercase">We recommend</span>
+            <button className="flex items-center gap-1" onClick={() => setSortOpen(true)}>
+              <span className="uppercase">{SORT_OPTIONS.find(s => s.id === sort)?.label}</span>
               <ChevronDown size={16} />
             </button>
           </div>
@@ -174,11 +193,12 @@ const Category = () => {
           </Link>
         </div>
       )}
+      {/* Filters */}
       <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)}>
         <DialogBackdrop
           transition
           className={clsx(
-            'fixed inset-0 z-40 bg-[#817d734c]',
+            'fixed inset-0 z-50 bg-[#817d734c]',
             'duration-150 data-closed:opacity-0'
           )}
         />
@@ -258,6 +278,61 @@ const Category = () => {
             <CloseButton className="btn w-full text-sm" onClick={() => setFiltersOpen(false)}>
               Show results ({totalProductCount})
             </CloseButton>
+          </DialogPanel>
+        </div>
+      </Dialog>
+      {/* Sort dialog */}
+      <Dialog open={sortOpen} onClose={() => setSortOpen(false)}>
+        <DialogBackdrop
+          transition
+          className={clsx(
+            'fixed inset-0 z-50 bg-[#817d734c]',
+            'duration-150 data-closed:opacity-0'
+          )}
+        />
+        <div className="fixed inset-0 z-50 flex items-end justify-center md:items-start md:justify-end">
+          <DialogPanel
+            transition
+            className={clsx(
+              'm-4 mt-4! w-[95vw] data-closed:m-0 md:w-[40vw] lg:w-[25vw]',
+              'duration-300 ease-in-out max-md:data-closed:translate-y-full md:data-closed:translate-x-full',
+              'bg-cream flex flex-col rounded-lg p-7.5 uppercase [box-shadow:0_.313em_.938em_#00000080]'
+            )}
+          >
+            <div className="flex justify-between py-4">
+              <DialogTitle className="text-[15px] font-bold">Sort Products</DialogTitle>
+              <CloseButton>
+                <X size={16} />
+              </CloseButton>
+            </div>
+            <div className="space-y-5 overflow-auto py-5 hover:[&:has(button:hover)]:*:opacity-50">
+              {SORT_OPTIONS.map(opt => {
+                const selected = sort === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    className={clsx(
+                      'flex w-full items-center gap-3 text-[13px] font-medium uppercase',
+                      'duration-200 hover:opacity-100!'
+                    )}
+                    onClick={() => {
+                      setSort(opt.id);
+                      setSortOpen(false);
+                    }}
+                  >
+                    <span
+                      className={clsx(
+                        'inline-block size-3 border border-[#cbcbcb]',
+                        selected && 'bg-[#ff6600]'
+                      )}
+                    />
+                    <span>
+                      {opt.title} // {opt.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </DialogPanel>
         </div>
       </Dialog>

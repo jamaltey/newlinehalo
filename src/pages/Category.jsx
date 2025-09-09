@@ -144,7 +144,7 @@ const Category = () => {
             </button>
             <button
               onClick={() => setFiltersOpen(true)}
-              className="btn fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-1 p-2.5 md:hidden"
+              className="btn fixed bottom-5 left-1/2 z-50 -translate-x-1/2 gap-1 p-2.5 md:hidden"
             >
               <span className="leading-snug">FILTERS</span>
               <ListFilter size={16} />
@@ -275,7 +275,7 @@ const Category = () => {
             >
               Clear Filters
             </button>
-            <CloseButton className="btn w-full text-sm" onClick={() => setFiltersOpen(false)}>
+            <CloseButton className="btn text-sm" onClick={() => setFiltersOpen(false)}>
               Show results ({totalProductCount})
             </CloseButton>
           </DialogPanel>

@@ -6,7 +6,7 @@ const Loading = ({ fixed = false, backdrop = false }) => {
       <div
         className={clsx(
           'absolute top-1/2 left-1/2 size-full max-h-14 max-w-14 -translate-1/2 animate-spin',
-          'rounded-[50%] border-3 border-black/20 border-t-orange-500'
+          'rounded-full border-3 border-black/20 border-t-orange-500'
         )}
       ></div>
     </div>

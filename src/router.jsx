@@ -17,7 +17,6 @@ const rootLoader = async () => {
     const { data: categories, error } = await supabase
       .from('categories')
       .select('*, subcategories(*)')
-      .order('image', { ascending: false, nullsFirst: false });
     if (error) throw error;
     return { categories };
   } catch (err) {
@@ -36,7 +35,7 @@ const router = createBrowserRouter(
     >
       <Route index element={<Home />} />
       <Route path="/:id" element={<Category />} />
-      <Route path="/products/:id" element={<ProductDetails />} />
+      <Route path="/products/:slug" element={<ProductDetails />} />
       <Route path="/login" element={<Login />} />
       <Route element={<AccountLayout />}>
         <Route path="/profile" element={<Profile />} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import supabase, { initSupabase } from '../utils/supabase';
+import supabase from '../utils/supabase';
 import AuthContext from './AuthContext';
 
 const AuthProvider = ({ children }) => {
@@ -58,8 +58,7 @@ const AuthProvider = ({ children }) => {
 
   const signIn = async ({ email, password, rememberMe = true }) => {
     setLoading(true);
-    const client = initSupabase(rememberMe);
-    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setLoading(false);

@@ -24,4 +24,3 @@ export const areArraySetsEqual = (a, b) => {
 
 export const areFiltersEqual = (a, b) =>
   a.onSale === b.onSale && areArraySetsEqual(a.priceRanges, b.priceRanges);
-

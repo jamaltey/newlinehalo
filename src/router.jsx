@@ -9,15 +9,15 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Orders from './pages/Orders';
 import ProductDetails from './pages/ProductDetails';
-import SearchResults from './pages/SearchResults';
 import Profile from './pages/Profile';
+import SearchResults from './pages/SearchResults';
 import supabase from './utils/supabase';
 
 const rootLoader = async () => {
   try {
     const { data: categories, error } = await supabase
       .from('categories')
-      .select('*, subcategories(*)')
+      .select('*, subcategories(*)');
     if (error) throw error;
     return { categories };
   } catch (err) {

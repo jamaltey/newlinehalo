@@ -1,7 +1,12 @@
 import { CloseButton, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
-import { DEFAULT_FILTERS, PRICE_RANGES, areArraySetsEqual, areFiltersEqual } from '../constants/products';
+import {
+  DEFAULT_FILTERS,
+  PRICE_RANGES,
+  areArraySetsEqual,
+  areFiltersEqual,
+} from '../constants/products';
 
 const FiltersDialog = ({ open, setOpen, filters, setFilters, totalCount }) => {
   return (
@@ -31,7 +36,10 @@ const FiltersDialog = ({ open, setOpen, filters, setFilters, totalCount }) => {
               {PRICE_RANGES.map(range => {
                 const checked = filters.priceRanges.includes(range.id);
                 return (
-                  <label key={range.id} className="flex cursor-pointer items-center gap-3 select-none">
+                  <label
+                    key={range.id}
+                    className="flex cursor-pointer items-center gap-3 select-none"
+                  >
                     <input
                       type="checkbox"
                       className="size-3.5 cursor-pointer appearance-none border border-[#cbcbcb] checked:bg-[#ff6600]"
@@ -60,7 +68,9 @@ const FiltersDialog = ({ open, setOpen, filters, setFilters, totalCount }) => {
                 checked={filters.onSale}
                 onChange={e => {
                   const checked = e.target.checked;
-                  setFilters(prev => (prev.onSale === checked ? prev : { ...prev, onSale: checked }));
+                  setFilters(prev =>
+                    prev.onSale === checked ? prev : { ...prev, onSale: checked }
+                  );
                 }}
               />
               <label htmlFor="onSale" className="cursor-pointer text-xs font-bold">
@@ -88,4 +98,3 @@ const FiltersDialog = ({ open, setOpen, filters, setFilters, totalCount }) => {
 };
 
 export default FiltersDialog;
-

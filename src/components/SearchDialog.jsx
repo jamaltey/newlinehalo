@@ -30,7 +30,10 @@ const SearchDialog = ({ open, setOpen }) => {
       setLoading(true);
       const { data, error, count } = await supabase
         .from('products')
-        .select('id,name,slug,price_current,price_old,tags,product_images(*),product_colors(color_id)', { count: 'exact' })
+        .select(
+          'id,name,slug,price_current,price_old,tags,product_images(*),product_colors(color_id)',
+          { count: 'exact' }
+        )
         .in('product_images.type', ['packshot'])
         .ilike('name', `%${debouncedQuery}%`)
         .range(0, 4);
@@ -79,7 +82,7 @@ const SearchDialog = ({ open, setOpen }) => {
         </form>
         {query && (
           <div className="px-6 py-3">
-            <div className="mb-3 text-xs font-bold uppercase text-[#6a6967]">
+            <div className="mb-3 text-xs font-bold text-[#6a6967] uppercase">
               {loading ? (
                 'Searching…'
               ) : totalCount ? (
@@ -112,7 +115,9 @@ const SearchDialog = ({ open, setOpen }) => {
                         />
                       )}
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold uppercase leading-tight">{p.name}</span>
+                        <span className="text-sm leading-tight font-semibold uppercase">
+                          {p.name}
+                        </span>
                         <span className="text-xs">{p.price_current} EUR</span>
                       </div>
                     </Link>

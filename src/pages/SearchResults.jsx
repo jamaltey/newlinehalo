@@ -2,10 +2,10 @@ import { ChevronDown, ListFilter } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import FiltersDialog from '../components/FiltersDialog';
+import Loading from '../components/Loading';
 import ProductGrid from '../components/ProductGrid';
 import SortDialog from '../components/SortDialog';
 import { DEFAULT_FILTERS, PRICE_RANGES, SORT_OPTIONS } from '../constants/products';
-import Loading from '../components/Loading';
 import supabase from '../utils/supabase';
 
 const SearchResults = () => {
@@ -35,7 +35,9 @@ const SearchResults = () => {
       .ilike('name', `%${q}%`);
 
     if (filters.priceRanges.length) {
-      const selectedExprs = PRICE_RANGES.filter(r => filters.priceRanges.includes(r.id)).map(r => r.expr);
+      const selectedExprs = PRICE_RANGES.filter(r => filters.priceRanges.includes(r.id)).map(
+        r => r.expr
+      );
       query = query.or(selectedExprs.join(','));
     }
     if (filters.onSale) {
@@ -99,7 +101,10 @@ const SearchResults = () => {
             <span>
               {total} result{total === 1 ? '' : 's'} for "{q}"
             </span>
-            <button onClick={() => setFiltersOpen(true)} className="hidden items-center gap-px md:flex">
+            <button
+              onClick={() => setFiltersOpen(true)}
+              className="hidden items-center gap-px md:flex"
+            >
               <span className="leading-snug">FILTERS</span>
               <ListFilter size={16} />
             </button>

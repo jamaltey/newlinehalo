@@ -1,5 +1,5 @@
-import ProductCard from './ProductCard';
 import Loading from './Loading';
+import ProductCard from './ProductCard';
 
 const ProductGrid = ({
   products,
@@ -50,4 +50,3 @@ const ProductGrid = ({
 };
 
 export default ProductGrid;
-

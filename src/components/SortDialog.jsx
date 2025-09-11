@@ -41,7 +41,10 @@ const SortDialog = ({ open, setOpen, sort, setSort }) => {
                   }}
                 >
                   <span
-                    className={clsx('inline-block size-3 border border-[#cbcbcb]', selected && 'bg-[#ff6600]')}
+                    className={clsx(
+                      'inline-block size-3 border border-[#cbcbcb]',
+                      selected && 'bg-[#ff6600]'
+                    )}
                   />
                   <span>
                     {opt.title} // {opt.label}

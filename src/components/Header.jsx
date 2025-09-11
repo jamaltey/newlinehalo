@@ -4,7 +4,7 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Bookmark, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import { Link, useLocation, useRouteLoaderData } from 'react-router';
+import { Link, useLocation, useNavigate, useRouteLoaderData } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
 import SearchDialog from './SearchDialog';
 
@@ -17,7 +17,10 @@ const Header = () => {
   const [openedDropdown, setOpenedDropdown] = useState('');
   const location = useLocation();
   const { categories } = useRouteLoaderData('root');
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [searchInput, setSearchInput] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -46,7 +49,22 @@ const Header = () => {
 
   const handleSearchSubmit = e => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const q = (fd.get('search') || '').toString().trim();
+    if (q) navigate(`/search?q=${encodeURIComponent(q)}`);
   };
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchInput.trim()), 500);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (!debouncedSearch) return;
+    const currentQ = new URLSearchParams(location.search).get('q') || '';
+    if (location.pathname === '/search' && currentQ === debouncedSearch) return;
+    navigate(`/search?q=${encodeURIComponent(debouncedSearch)}`);
+  }, [debouncedSearch]);
 
   const isBgCream = !pageHasHero || openedDropdown || scrolled;
   const isTextDark = isBgCream || mobileOpen;
@@ -171,6 +189,8 @@ const Header = () => {
                     type="search"
                     name="search"
                     placeholder="SEARCH"
+                    value={searchInput}
+                    onChange={e => setSearchInput(e.target.value)}
                   />
                 )}
               </form>

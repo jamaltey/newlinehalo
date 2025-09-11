@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Orders from './pages/Orders';
 import ProductDetails from './pages/ProductDetails';
+import SearchResults from './pages/SearchResults';
 import Profile from './pages/Profile';
 import supabase from './utils/supabase';
 
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       id="root"
     >
       <Route index element={<Home />} />
+      <Route path="/search" element={<SearchResults />} />
       <Route path="/:id" element={<Category />} />
       <Route path="/products/:slug" element={<ProductDetails />} />
       <Route path="/login" element={<Login />} />

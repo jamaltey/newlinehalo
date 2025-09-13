@@ -1,12 +1,8 @@
 import { CloseButton, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
-import {
-  DEFAULT_FILTERS,
-  PRICE_RANGES,
-  areArraySetsEqual,
-  areFiltersEqual,
-} from '../constants/products';
+import { DEFAULT_FILTERS, PRICE_RANGES } from '../constants/products';
+import { areArraySetsEqual, areFiltersEqual } from '../utils/products';
 
 const FiltersDialog = ({ open, setOpen, filters, setFilters, totalCount }) => {
   return (

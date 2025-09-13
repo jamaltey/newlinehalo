@@ -15,12 +15,4 @@ export const SORT_OPTIONS = [
   { id: 'price_desc', title: 'Highest price', label: 'High to Low' },
 ];
 
-export const areArraySetsEqual = (a, b) => {
-  if (a.length !== b.length) return false;
-  const setA = new Set(a);
-  for (const item of b) if (!setA.has(item)) return false;
-  return true;
-};
-
-export const areFiltersEqual = (a, b) =>
-  a.onSale === b.onSale && areArraySetsEqual(a.priceRanges, b.priceRanges);
+// moved to `src/utils/products.js`

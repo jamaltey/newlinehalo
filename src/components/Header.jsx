@@ -81,7 +81,8 @@ const Header = () => {
         layout
         transition={{ duration: 0.2, ease: 'easeOut' }}
         className={clsx(
-          'fixed top-0 z-50 w-full transition-colors duration-150',
+          'top-0 z-50 w-full transition-colors duration-150',
+          pageHasHero ? 'fixed' : 'sticky mb-15',
           isBgCream ? 'bg-cream' : 'bg-transparent',
           isTextDark ? 'text-dark' : 'text-white'
         )}
@@ -102,19 +103,9 @@ const Header = () => {
               )}
             >
               <Marquee autoFill>
-                <div
-                  className={clsx(
-                    'ml-10 size-[.5em]',
-                    pageHasHero && isTextDark ? 'bg-dark' : 'bg-white'
-                  )}
-                ></div>
+                <div className="ml-10 size-[.5em] bg-current"></div>
                 <span className="mx-8">Free shipping on orders over 50 EUR</span>
-                <div
-                  className={clsx(
-                    'mr-10 size-[.5em]',
-                    pageHasHero && isTextDark ? 'bg-dark' : 'bg-white'
-                  )}
-                ></div>
+                <div className="mr-10 size-[.5em] bg-current"></div>
               </Marquee>
             </motion.div>
           )}
@@ -130,7 +121,11 @@ const Header = () => {
           >
             {/* Logo */}
             <Link to="/" className="mx-4 py-4 text-xl leading-tight font-bold">
-              <img className={isTextDark ? undefined : 'invert'} src="/icons/logo.svg" alt="HALO" />
+              <img
+                className={clsx('duration-150', !isTextDark && 'invert')}
+                src="/icons/logo.svg"
+                alt="HALO"
+              />
             </Link>
 
             {/* Navigation */}
@@ -249,31 +244,30 @@ const Header = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'tween', duration: 0.2 }}
-              className="bg-cream text-dark absolute top-0 left-0 -z-10 flex h-[150vh] w-full lg:hidden"
-            >
-              <div className="w-64 p-6 pt-20">
-                <nav className="mt-8 flex flex-col space-y-4">
-                  {categories.map(({ title, uri }, index) => (
-                    <Link key={index} to={uri} className="text-2xl font-bold uppercase">
-                      {title}
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         <SearchDialog open={searchDialogOpen} setOpen={setSearchDialogOpen} />
       </motion.header>
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'tween', duration: 0.2 }}
+            className="bg-cream text-dark fixed inset-0 z-10 flex h-[150vh] lg:hidden"
+          >
+            <div className="w-64 p-6 pt-20">
+              <nav className="mt-8 flex flex-col space-y-4">
+                {categories.map(({ title, uri }, index) => (
+                  <Link key={index} to={uri} className="text-2xl font-bold uppercase">
+                    {title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </LayoutGroup>
   );
 };

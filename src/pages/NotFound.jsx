@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 const NotFound = () => {
   return (
-    <div className="pt-40 pb-20">
+    <div className="pb-20">
       <div className="align-center flex w-full flex-wrap">
         <div className="space-y-4 p-8 md:w-1/2">
           <h1 className="pb-8 text-4xl font-medium">404</h1>

@@ -15,13 +15,24 @@ import supabase from './utils/supabase';
 
 const rootLoader = async () => {
   try {
+    const cached = localStorage.getItem('categories');
+    if (cached) {
+      try {
+        const categories = JSON.parse(cached);
+        return { categories };
+      } catch (err) {}
+    }
+
     const { data: categories, error } = await supabase
       .from('categories')
       .select('*, subcategories(*)');
     if (error) throw error;
+
+    localStorage.setItem('categories', JSON.stringify(categories));
     return { categories };
   } catch (err) {
     console.error('Error loading categories:', err.message);
+    return { categories: [] };
   }
 };
 

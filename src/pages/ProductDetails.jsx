@@ -63,7 +63,7 @@ const ProductDetails = () => {
           </Swiper>
         </div>
       </div>
-      <div className="h-full overflow-auto px-4 pt-5 lg:m-auto lg:w-125 lg:pt-40">
+      <div className="h-full overflow-auto px-4 pt-5 lg:m-auto lg:w-125">
         {(product.price_old || product.tags.length > 0) && (
           <div className="flex items-start gap-2 pb-6 text-[9px] font-bold uppercase lg:text-[11px]">
             {product.price_old && (

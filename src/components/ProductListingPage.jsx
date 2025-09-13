@@ -59,7 +59,7 @@ const ProductListingPage = ({
   const sortLabel = useMemo(() => SORT_OPTIONS.find(s => s.id === sort)?.label || '', [sort]);
 
   return (
-    <div className={header ? undefined : 'pt-40'}>
+    <div className={header ? undefined : ''}>
       {header}
 
       {loading ? (

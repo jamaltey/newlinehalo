@@ -6,7 +6,7 @@ const AccountLayout = () => {
   const { signOut } = useAuth();
 
   return (
-    <div className="container mx-auto max-w-[52rem] px-4 pt-40">
+    <div className="container mx-auto max-w-[52rem] px-4">
       <div className="flex items-center justify-center gap-4 pb-7 text-xs font-bold uppercase md:gap-6">
         <NavLink
           to="/profile"

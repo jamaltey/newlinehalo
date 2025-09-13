@@ -243,10 +243,9 @@ const Header = () => {
             </div>
           </motion.div>
         </AnimatePresence>
-
-        <SearchDialog open={searchDialogOpen} setOpen={setSearchDialogOpen} />
       </motion.header>
-      {/* Mobile Navigation */}
+      {/* Mobile */}
+      <SearchDialog open={searchDialogOpen} setOpen={setSearchDialogOpen} />
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

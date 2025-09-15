@@ -12,7 +12,7 @@ const Login = () => {
   if (user) return <Navigate to="/" />;
 
   return (
-    <div className="container mx-auto max-w-3xl pb-25">
+    <div className="container mx-auto max-w-3xl pb-25 pt-15">
       <div className="relative flex items-end justify-center pb-14">
         <Link to="/" className="absolute left-0 hidden uppercase hover:underline lg:flex">
           <ChevronLeft />

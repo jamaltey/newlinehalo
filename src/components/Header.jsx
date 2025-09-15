@@ -82,7 +82,7 @@ const Header = () => {
         transition={{ duration: 0.2, ease: 'easeOut' }}
         className={clsx(
           'top-0 z-50 w-full transition-colors duration-150',
-          pageHasHero ? 'fixed' : 'sticky mb-15',
+          pageHasHero ? 'fixed' : 'sticky',
           isBgCream ? 'bg-cream' : 'bg-transparent',
           isTextDark ? 'text-dark' : 'text-white'
         )}

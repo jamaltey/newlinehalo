@@ -139,10 +139,13 @@ const disclosures = [
 const Footer = () => {
   return (
     <footer className="min-h-[50vh] uppercase">
-      <Marquee className="border border-[#cbcbcb] py-4 text-[11px] font-bold" autoFill>
-        <div className="bg-dark ml-10 h-[.5em] w-[.5em]"></div>
+      <Marquee className="text-dark border border-[#cbcbcb] py-4 text-[11px] font-bold" autoFill>
+        <div className="ml-10 size-[.5em] bg-current"></div>
         <span className="mx-8">Free shipping on orders over 50 EUR</span>
-        <div className="bg-dark mr-10 h-[.5em] w-[.5em]"></div>
+        <div className="mr-10 size-[.5em] bg-current"></div>
+        <div className="ml-10 size-[.5em] bg-current"></div>
+        <span className="mx-8">Delivery within 3-6 business days</span>
+        <div className="mr-10 size-[.5em] bg-current"></div>
       </Marquee>
 
       <div className="w-full md:flex">

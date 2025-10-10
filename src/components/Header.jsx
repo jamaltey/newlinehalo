@@ -106,6 +106,9 @@ const Header = () => {
                 <div className="ml-10 size-[.5em] bg-current"></div>
                 <span className="mx-8">Free shipping on orders over 50 EUR</span>
                 <div className="mr-10 size-[.5em] bg-current"></div>
+                <div className="ml-10 size-[.5em] bg-current"></div>
+                <span className="mx-8">Delivery within 3-6 business days</span>
+                <div className="mr-10 size-[.5em] bg-current"></div>
               </Marquee>
             </motion.div>
           )}

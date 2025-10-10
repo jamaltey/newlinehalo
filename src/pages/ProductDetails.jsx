@@ -1,6 +1,13 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import clsx from 'clsx';
-import { Bookmark, ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
+import {
+  Bookmark,
+  BookmarkCheck,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  ShoppingBag,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useParams } from 'react-router';
@@ -9,35 +16,53 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Loading from '../components/Loading';
+import { useAuth } from '../hooks/useAuth';
+import { useFavorites } from '../hooks/useFavorites';
 import supabase from '../utils/supabase';
 import NotFound from './NotFound';
 
 const ProductDetails = () => {
   const { slug } = useParams();
+  const { loading: authLoading } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const favorites = useFavorites();
 
   useEffect(() => {
     (async () => {
+      if (authLoading) return;
       const { data } = await supabase
         .from('products')
         .select('*, product_images(*), colors(*)')
         .eq('slug', slug)
         .single();
       setProduct(data);
+      setIsFavorite(await favorites.isFavorite(data.id));
       setLoading(false);
       console.log(data);
     })();
-  }, [slug]);
+  }, [slug, authLoading]);
+
+  if (authLoading) return null;
 
   return loading ? (
     <Loading fixed backdrop />
   ) : product ? (
     <div className="flex w-full flex-col overflow-hidden lg:h-screen lg:flex-row">
-      <div className="border-[#cbcbcb] pt-25 lg:w-1/2 lg:border-r">
+      <div className="border-[#cbcbcb] lg:w-1/2 lg:border-r">
         <div className="relative h-full">
-          <button className="absolute z-10 mt-5 ml-8 flex size-10 items-center justify-center rounded-full bg-white duration-150 hover:bg-[#ff6600]">
-            <Bookmark size={20} />
+          <button
+            onClick={() => favorites.toggleFavorite(product.id).then(setIsFavorite)}
+            className="absolute z-10 mt-5 ml-8 flex size-10 items-center justify-center rounded-full bg-white duration-150 hover:bg-[#ff6600]"
+          >
+            {favorites.loading ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : isFavorite ? (
+              <BookmarkCheck size={20} />
+            ) : (
+              <Bookmark size={20} />
+            )}
           </button>
           <Swiper
             className="group relative h-full cursor-pointer **:h-full"
@@ -63,7 +88,7 @@ const ProductDetails = () => {
           </Swiper>
         </div>
       </div>
-      <div className="h-full overflow-auto px-4 pt-5 lg:m-auto lg:w-125">
+      <div className="h-full overflow-auto px-4 pt-15 lg:m-auto lg:w-125">
         {(product.price_old || product.tags.length > 0) && (
           <div className="flex items-start gap-2 pb-6 text-[9px] font-bold uppercase lg:text-[11px]">
             {product.price_old && (

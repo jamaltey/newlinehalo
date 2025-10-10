@@ -193,7 +193,7 @@ const Header = () => {
                 <Search size={18} />
               </button>
               <div className="group -ml-2 *:px-2">
-                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                <Link to="/favorites" className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <Bookmark className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
                 <span className="group/profile">

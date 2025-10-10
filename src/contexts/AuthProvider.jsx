@@ -65,8 +65,24 @@ const AuthProvider = ({ children }) => {
       throw error;
     }
 
+    setUser(data.user);
     setSession(data.session);
-    setUser(data.session.user);
+
+    // Sync guest favorites from localStorage to the user's account on login
+    try {
+      const localFavs = JSON.parse(localStorage.getItem('favorites') || '[]');
+      if (Array.isArray(localFavs) && localFavs.length > 0) {
+        const userId = data.user.id;
+        const rows = localFavs.map(productId => ({ profile_id: userId, product_id: productId }));
+
+        await supabase
+          .from('favorites')
+          .upsert(rows, { onConflict: 'profile_id,product_id', ignoreDuplicates: true });
+
+        localStorage.removeItem('favorites');
+      }
+    } catch (e) {}
+
     setLoading(false);
     return data;
   };

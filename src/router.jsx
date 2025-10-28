@@ -2,6 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import Loading from './components/Loading';
 import AccountLayout from './layouts/AccountLayout';
 import MainLayout from './layouts/MainLayout';
+import Cart from './pages/Cart';
 import Category from './pages/Category';
 import Favorites from './pages/Favorites';
 import Home from './pages/Home';
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
       <Route path="/:id" element={<Category />} />
       <Route path="/products/:slug" element={<ProductDetails />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/cart" element={<Cart />} />
       <Route element={<AccountLayout />}>
         <Route path="/profile" element={<Profile />} />
         <Route path="/orders" element={<Orders />} />

@@ -81,8 +81,10 @@ export const useFavorites = () => {
     setLoading(true);
     if (!user) {
       const favs = getLocalFavorites();
-      const newFavs = [...favs, productId];
-      localStorage.setItem('favorites', JSON.stringify(newFavs));
+      if (!favs.includes(productId)) {
+        const newFavs = [...favs, productId];
+        localStorage.setItem('favorites', JSON.stringify(newFavs));
+      }
     } else {
       await supabase.from('favorites').insert({ profile_id: user.id, product_id: productId });
     }

@@ -15,12 +15,12 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pageHasHero, setPageHasHero] = useState(false);
   const [openedDropdown, setOpenedDropdown] = useState('');
-  const location = useLocation();
-  const { categories } = useRouteLoaderData('root');
-  const navigate = useNavigate();
-  const { user, signOut } = useAuth();
   const [searchInput, setSearchInput] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { categories } = useRouteLoaderData('root');
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const observer = new MutationObserver(() => {

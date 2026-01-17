@@ -232,7 +232,7 @@ const Header = () => {
                     </div>
                   )}
                 </span>
-                <Link className="group-hover:*:opacity-50 hover:*:opacity-100">
+                <Link to="/cart" className="group-hover:*:opacity-50 hover:*:opacity-100">
                   <ShoppingBag className="inline-block transition-opacity duration-250" size={18} />
                 </Link>
               </div>

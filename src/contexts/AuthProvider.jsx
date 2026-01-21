@@ -4,6 +4,14 @@ import { CART_STORAGE_KEY, readStoredCart } from '../store/cartSlice';
 import supabase from '../utils/supabase';
 import AuthContext from './AuthContext';
 
+/**
+ * Generates a unique key for a cart item based on its product ID, size, and color ID.
+ * This key is used to store and retrieve cart items from local storage and Supabase.
+ * @param {string | number} productId
+ * @param {string} size
+ * @param {string | number} colorId
+ * @returns {string} A unique key for the cart item in the format ```<product_id>__<size>__<color_id>```
+ */
 const buildCartKey = (productId, size, colorId) =>
   `${productId ?? 'unknown'}__${size ?? ''}__${colorId ?? ''}`;
 

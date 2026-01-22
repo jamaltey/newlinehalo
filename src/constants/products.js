@@ -14,5 +14,3 @@ export const SORT_OPTIONS = [
   { id: 'price_asc', title: 'Lowest price', label: 'Low to High' },
   { id: 'price_desc', title: 'Highest price', label: 'High to Low' },
 ];
-
-// moved to `src/utils/products.js`

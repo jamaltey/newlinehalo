@@ -1,6 +1,6 @@
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const FormInput = ({
   label = '',
@@ -40,6 +40,7 @@ const FormInput = ({
         />
         {type === 'password' && (
           <button
+            type="button"
             className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-xs font-bold hover:underline"
             onClick={() => setPasswordShown(!passwordShown)}
           >

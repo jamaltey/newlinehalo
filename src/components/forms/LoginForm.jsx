@@ -24,8 +24,10 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { signIn } = useAuth();
+  const [wrongCredentials, setWrongCredentials] = useState(false);
 
-  const submit = credentials => signIn({ ...credentials, rememberMe });
+  const submit = credentials =>
+    signIn({ ...credentials, rememberMe }).catch(() => setWrongCredentials(true));
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
@@ -37,8 +39,9 @@ const LoginForm = () => {
       />
       <FormInput type="password" invalid={!!errors.password} register={register} />
       <FormCheckbox label="Remember me" checked={rememberMe} onChange={setRememberMe} />
-      <p className="text-right select-none">
-        <Link className="text-xs underline">Forgot password?</Link>
+      <p className="flex select-none">
+        {wrongCredentials && <p className="text-xs text-[#d03a3a]">Wrong email or password</p>}
+        <Link className="ml-auto text-xs underline">Forgot password?</Link>
       </p>
       <button className="btn w-full">Login to your account</button>
     </form>

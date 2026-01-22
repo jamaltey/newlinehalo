@@ -1,6 +1,6 @@
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const FormInput = ({
   label = '',

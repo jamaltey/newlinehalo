@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import * as yup from 'yup';
@@ -21,10 +21,16 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, values },
   } = useForm({ resolver: yupResolver(schema) });
   const { signIn } = useAuth();
   const [wrongCredentials, setWrongCredentials] = useState(false);
+
+  useEffect(() => {
+    if (wrongCredentials) {
+      setWrongCredentials(false);
+    }
+  }, [values]);
 
   const submit = credentials =>
     signIn({ ...credentials, rememberMe }).catch(() => setWrongCredentials(true));

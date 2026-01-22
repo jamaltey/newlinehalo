@@ -138,7 +138,7 @@ const disclosures = [
 
 const Footer = () => {
   return (
-    <footer className="min-h-[50vh] uppercase">
+    <footer className="uppercase">
       <Marquee className="text-dark border border-[#cbcbcb] py-4 text-[11px] font-bold" autoFill>
         <div className="ml-10 size-[.5em] bg-current"></div>
         <span className="mx-8">Free shipping on orders over 50 EUR</span>
@@ -260,7 +260,7 @@ const Footer = () => {
       <div className="w-full border-t border-[#cbcbcb]">
         <div className="flex w-full flex-wrap items-center justify-between px-6 py-4">
           <div className="w-1/2 text-xs md:w-8/12 lg:w-9/12">
-            <span>CVR: 43317032</span> / <span>ALL RIGHTS RESERVED</span>
+            <span>THIS IS A CLONE OF NEWLINE HALO</span>
           </div>
           <div className="flex w-1/2 items-center justify-end md:w-4/12 md:justify-between lg:w-3/12">
             <div className="group relative hidden items-center md:flex">

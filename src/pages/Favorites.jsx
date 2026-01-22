@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import Loading from '../components/Loading';
@@ -67,21 +68,25 @@ const Favorites = () => {
                       </Link>
                       <div className="flex flex-col gap-2">
                         <span className={clsx(product.price_old && 'text-[#ff6600]')}>
-                          {product.price_current} €
+                          {product.price_current}€
                         </span>
                         {product.price_old && (
                           <span className="text-[#bfbfbf] line-through">{product.price_old} €</span>
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between">
-                      <button
-                        onClick={() => handleRemove(product.id)}
-                        className="underline"
-                        type="button"
-                      >
-                        Remove
-                      </button>
+                    <div className="flex flex-row-reverse flex-wrap items-center justify-between gap-2 md:flex-row">
+                      <div onClick={() => handleRemove(product.id)}>
+                        <button className="hidden underline md:block" type="button">
+                          Remove
+                        </button>
+                        <button
+                          className="btn py-3 text-xs [--btn-bg:#d03a3a] md:hidden"
+                          type="button"
+                        >
+                          <Trash />
+                        </button>
+                      </div>
                       <Link to={`/products/${product.slug}`} className="btn">
                         View details
                       </Link>

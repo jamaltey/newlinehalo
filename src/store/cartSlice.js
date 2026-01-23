@@ -1,32 +1,19 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { buildCartKey, normalizeNumber, normalizeQuantity } from '../utils/cartUtils';
 import supabase from '../utils/supabase';
 
 export const CART_STORAGE_KEY = 'cart';
 
-const composeKey = (productId, size, colorId) =>
-  `${productId ?? 'unknown'}__${size ?? ''}__${colorId ?? ''}`;
-
-const sanitizeNumber = value => {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : null;
-};
-
-const sanitizeQuantity = value => {
-  const n = Number(value);
-  if (!Number.isFinite(n) || n <= 0) return 1;
-  return Math.floor(n);
-};
-
 const sanitizeCartEntry = entry => {
   if (!entry) return null;
-  const productId = sanitizeNumber(entry.productId);
+  const productId = normalizeNumber(entry.productId);
   if (productId === null) return null;
   const size = typeof entry.size === 'string' && entry.size.trim() ? entry.size.trim() : null;
   const colorIdRaw = entry.colorId ?? entry.color_id;
   const colorId =
-    colorIdRaw === null || colorIdRaw === undefined ? null : sanitizeNumber(colorIdRaw);
-  const quantity = sanitizeQuantity(entry.quantity ?? 1);
+    colorIdRaw === null || colorIdRaw === undefined ? null : normalizeNumber(colorIdRaw);
+  const quantity = normalizeQuantity(entry.quantity ?? 1);
   return { productId, size, colorId, quantity };
 };
 
@@ -39,7 +26,7 @@ export const readStoredCart = () => {
       .map(sanitizeCartEntry)
       .filter(Boolean)
       .reduce((acc, item) => {
-        const key = composeKey(item.productId, item.size, item.colorId);
+        const key = buildCartKey(item.productId, item.size, item.colorId);
         const existing = acc.get(key);
         if (existing) {
           existing.quantity += item.quantity;
@@ -77,13 +64,13 @@ const attachProductMetadata = ({ productId, size, colorId, quantity, product, ca
       ? (product.colors.find(item => item.id === colorId) ?? null)
       : null;
   return {
-    key: composeKey(productId, size, colorId),
+    key: buildCartKey(productId, size, colorId),
     cartItemId: cartItemId ?? null,
     productId,
     size: size ?? null,
     colorId: colorId ?? null,
     color,
-    quantity: sanitizeQuantity(quantity),
+    quantity: normalizeQuantity(quantity),
     product,
   };
 };
@@ -152,13 +139,13 @@ export const addToCartThunk = createAsyncThunk(
     { getState, rejectWithValue }
   ) => {
     try {
-      const normalizedProductId = sanitizeNumber(productId);
+      const normalizedProductId = normalizeNumber(productId);
       if (normalizedProductId === null) throw new Error('Invalid product');
       const normalizedSize = typeof size === 'string' && size.trim() ? size.trim() : null;
       const normalizedColorId =
-        colorId === null || colorId === undefined ? null : sanitizeNumber(colorId);
-      const incrementBy = sanitizeQuantity(quantity);
-      const key = composeKey(normalizedProductId, normalizedSize, normalizedColorId);
+        colorId === null || colorId === undefined ? null : normalizeNumber(colorId);
+      const incrementBy = normalizeQuantity(quantity);
+      const key = buildCartKey(normalizedProductId, normalizedSize, normalizedColorId);
       const existing = getState().cart.items.find(item => item.key === key) ?? null;
       const targetQuantity = (existing?.quantity ?? 0) + incrementBy;
 
@@ -200,7 +187,7 @@ export const addToCartThunk = createAsyncThunk(
 
       const stored = readStoredCart();
       const filtered = stored.filter(
-        entry => composeKey(entry.productId, entry.size, entry.colorId) !== key
+        entry => buildCartKey(entry.productId, entry.size, entry.colorId) !== key
       );
       filtered.push({
         productId: normalizedProductId,
@@ -236,7 +223,7 @@ export const updateCartQuantityThunk = createAsyncThunk(
   'cart/updateQuantity',
   async ({ userId, key, quantity }, { getState, rejectWithValue }) => {
     try {
-      const sanitizedQuantity = sanitizeQuantity(quantity ?? 1);
+      const sanitizedQuantity = normalizeQuantity(quantity ?? 1);
       const existing = getState().cart.items.find(item => item.key === key);
       if (!existing) throw new Error('Item not found');
 
@@ -254,7 +241,7 @@ export const updateCartQuantityThunk = createAsyncThunk(
         if (error) throw error;
       } else {
         const stored = readStoredCart().map(entry => {
-          if (composeKey(entry.productId, entry.size, entry.colorId) === key) {
+          if (buildCartKey(entry.productId, entry.size, entry.colorId) === key) {
             return { ...entry, quantity: sanitizedQuantity };
           }
           return entry;
@@ -290,7 +277,7 @@ export const removeCartItemThunk = createAsyncThunk(
         if (error) throw error;
       } else {
         const stored = readStoredCart().filter(
-          entry => composeKey(entry.productId, entry.size, entry.colorId) !== key
+          entry => buildCartKey(entry.productId, entry.size, entry.colorId) !== key
         );
         writeStoredCart(stored);
       }

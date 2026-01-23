@@ -58,7 +58,7 @@ const Profile = () => {
         <div className="order-0 w-1/2 px-2 sm:order-none sm:w-1/3">
           <dl>
             <dt className="text-xs text-[#737373] uppercase">Gender</dt>
-            <dd className="text-sm">{profile.gender}</dd>
+            <dd className="text-sm capitalize">{profile.gender}</dd>
           </dl>
         </div>
 

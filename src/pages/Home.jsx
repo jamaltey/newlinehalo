@@ -17,7 +17,10 @@ const Home = () => {
         />
         <div className="absolute bottom-0 flex w-full flex-col items-start justify-between gap-y-4 p-8 lg:flex-row">
           <h2 className="text-[2rem] font-bold text-white md:text-[2.5rem]">Back to training</h2>
-          <Link className="btn text-dark text-[15px] leading-[17.25px] [--btn-bg:#fff]">
+          <Link
+            to="/mens-new-in"
+            className="btn text-dark text-[15px] leading-[17.25px] [--btn-bg:#fff]"
+          >
             Shop the news
           </Link>
         </div>
@@ -26,12 +29,12 @@ const Home = () => {
         <ProductFeatureCard
           imageSrc="images/homepage/mens-training.jpg"
           label="Men's training"
-          link="https://www.newlinehalo.com/men/activewear"
+          link="/mens-training"
         />
         <ProductFeatureCard
           imageSrc="images/homepage/halo-sorona-half-zip.jpg"
           label="Halo Sorona Half Zip"
-          link="https://www.newlinehalo.com/halo-sorona-half-zip-turbulence/610544-1518.html"
+          link="/mens-clothing"
           textBlack
         />
       </div>
@@ -41,18 +44,18 @@ const Home = () => {
         label="The Halo Archive"
         labelProminent
         showLinkIcon={false}
-        link="https://www.newlinehalo.com/archive"
+        link="/archive"
       />
       <div className="flex flex-col md:flex-row">
         <ProductFeatureCard
           imageSrc="images/homepage/light-outwear.jpg"
           label="Light outwear"
-          link="https://www.newlinehalo.com/women/outdoor"
+          link="/womens-outdoor"
         />
         <ProductFeatureCard
           imageSrc="images/homepage/tees-and-shorts.jpg"
           label="Tees and shorts"
-          link="https://www.newlinehalo.com/men/activewear"
+          link="/mens-training"
         />
       </div>
     </div>

@@ -4,6 +4,7 @@ import AccountLayout from './layouts/AccountLayout';
 import MainLayout from './layouts/MainLayout';
 import Cart from './pages/Cart';
 import Category from './pages/Category';
+import EditProfile from './pages/EditProfile';
 import Favorites from './pages/Favorites';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -54,6 +55,7 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route element={<AccountLayout />}>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/favorites" element={<Favorites />} />
       </Route>

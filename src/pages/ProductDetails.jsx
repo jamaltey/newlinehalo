@@ -25,12 +25,15 @@ import NotFound from './NotFound';
 const ProductDetails = () => {
   const { slug } = useParams();
   const { loading: authLoading, user } = useAuth();
+  const [originalProduct, setOriginalProduct] = useState(null);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColorId, setSelectedColorId] = useState(null);
   const [productIsFavorite, setProductIsFavorite] = useState(false);
   const [favoriteReady, setFavoriteReady] = useState(false);
+  const [imageType, setImageType] = useState('men');
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const { loading: favoritesLoading, isFavorite, toggleFavorite } = useFavorites();
 
@@ -50,10 +53,31 @@ const ProductDetails = () => {
       } else {
         console.log(data);
         setProduct(data);
+        setOriginalProduct(data);
       }
       setLoading(false);
     })();
   }, [slug, authLoading]);
+
+  useEffect(() => {
+    if (!originalProduct || !swiperInstance) return;
+    if (product?.product_images?.length > 0 && imageType) {
+      const product_images = originalProduct.product_images.filter(
+        image => image.type === 'packshot' || image.type === imageType
+      );
+      // Sort men/women images first
+      product_images.sort((imageA, imageB) => {
+        if (imageA.type === 'packshot') return 1;
+        if (imageB.type === 'packshot') return -1;
+        return 0;
+      });
+      setProduct(product => ({
+        ...product,
+        product_images,
+      }));
+      swiperInstance.slideTo(0);
+    }
+  }, [swiperInstance, originalProduct, imageType]);
 
   useEffect(() => {
     if (!product) return;
@@ -158,10 +182,11 @@ const ProductDetails = () => {
             modules={[Navigation]}
             navigation={{ prevEl: '.btn-prev', nextEl: '.btn-next', disabledClass: 'btn-disabled' }}
             spaceBetween={10}
+            onSwiper={setSwiperInstance}
           >
             {product.product_images?.map(image => (
               <SwiperSlide className="**:w-full **:object-contain" key={image.id}>
-                <LazyLoadImage
+                <img
                   src={`${image.url}?sw=700&sh=930&q=80`}
                   placeholderSrc={`${image.url}?sw=70&sh=93&q=80`}
                   alt={product.name}
@@ -201,13 +226,27 @@ const ProductDetails = () => {
         <div className="py-6 uppercase">
           <p className="text-dark/63 mb-2.5 text-[9px]">Show on model</p>
           <div className="flex items-center gap-2.5 text-xs font-bold">
-            <div className="bg-dark rounded-3xl border border-[#6a6967] px-4 py-2 text-white">
+            <button
+              onClick={() => setImageType('men')}
+              type="button"
+              className={clsx(
+                'rounded-3xl border border-[#6a6967] px-4 py-2 uppercase duration-300',
+                imageType === 'men' ? 'bg-dark text-white' : 'hover:bg-[#6a6967] hover:text-white'
+              )}
+            >
               Men
-            </div>
+            </button>
             <span>/</span>
-            <div className="rounded-3xl border border-[#6a6967] px-4 py-2 duration-300 hover:bg-[#6a6967] hover:text-white">
+            <button
+              onClick={() => setImageType('women')}
+              type="button"
+              className={clsx(
+                'rounded-3xl border border-[#6a6967] px-4 py-2 uppercase duration-300',
+                imageType === 'women' ? 'bg-dark text-white' : 'hover:bg-[#6a6967] hover:text-white'
+              )}
+            >
               Women
-            </div>
+            </button>
           </div>
         </div>
 
@@ -285,7 +324,7 @@ const ProductDetails = () => {
             <Tab>Shipping & Returns</Tab>
             <Tab>Washing & Materials</Tab>
           </TabList>
-          <TabPanels className="h-45 overflow-auto">
+          <TabPanels className="overflow-auto pb-5 lg:h-45 lg:pb-0">
             <TabPanel>{product.description}</TabPanel>
             <TabPanel>
               <ul className="list-inside list-disc">

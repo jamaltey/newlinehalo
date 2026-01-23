@@ -306,6 +306,85 @@ export const clearCartThunk = createAsyncThunk(
   }
 );
 
+export const handleUserChange = createAsyncThunk(
+  'cart/handleUserChange',
+  async ({ oldUserId, newUserId }, { rejectWithValue }) => {
+    try {
+      // Logging in: sync guest cart to user account
+      if (!oldUserId && newUserId) {
+        const guestCart = readStoredCart();
+        if (guestCart.length > 0) {
+          const { data: remoteCart, error: remoteError } = await supabase
+            .from('cart_items')
+            .select('product_id, size, color_id, quantity')
+            .eq('profile_id', newUserId);
+          if (remoteError) throw remoteError;
+
+          const remoteMap = new Map(
+            (remoteCart ?? []).map(row => [
+              buildCartKey(row.product_id, row.size, row.color_id),
+              normalizeQuantity(row.quantity),
+            ])
+          );
+
+          const rows = guestCart
+            .map(item => {
+              const productId = normalizeNumber(item.productId);
+              if (productId === null) return null;
+              const size =
+                typeof item.size === 'string' && item.size.trim() ? item.size.trim() : null;
+              const colorId =
+                item.colorId === null || item.colorId === undefined
+                  ? null
+                  : normalizeNumber(item.colorId);
+              const key = buildCartKey(productId, size, colorId);
+              const mergedQuantity = normalizeQuantity(item.quantity) + (remoteMap.get(key) ?? 0);
+              remoteMap.set(key, mergedQuantity);
+              return {
+                profile_id: newUserId,
+                product_id: productId,
+                size,
+                color_id: colorId,
+                quantity: mergedQuantity,
+              };
+            })
+            .filter(Boolean);
+
+          if (rows.length > 0) {
+            await supabase
+              .from('cart_items')
+              .upsert(rows, { onConflict: 'profile_id,product_id,size,color_id' });
+          }
+          writeStoredCart([]);
+        }
+      }
+      // Logging out: sync user cart to localStorage
+      else if (oldUserId && !newUserId) {
+        const { data: remoteCart, error: cartError } = await supabase
+          .from('cart_items')
+          .select('product_id, size, color_id, quantity')
+          .eq('profile_id', oldUserId);
+        if (cartError) throw cartError;
+        if (Array.isArray(remoteCart) && remoteCart.length > 0) {
+          writeStoredCart(
+            remoteCart.map(item => ({
+              productId: item.product_id,
+              size: item.size,
+              colorId: item.color_id,
+              quantity: item.quantity,
+            }))
+          );
+        } else {
+          writeStoredCart([]);
+        }
+      }
+      return { userId: newUserId };
+    } catch (error) {
+      return rejectWithValue(error.message ?? 'Unable to sync cart during user change');
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -392,6 +471,21 @@ const cartSlice = createSlice({
       .addCase(clearCartThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error?.message || 'Unable to clear cart';
+      })
+      .addCase(handleUserChange.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(handleUserChange.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.lastFetchedFor = action.payload.userId ?? 'guest';
+        state.items = [];
+      })
+      .addCase(handleUserChange.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.payload || action.error?.message || 'Unable to sync cart during user change';
       });
   },
 });

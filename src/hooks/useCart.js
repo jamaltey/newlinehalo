@@ -5,11 +5,9 @@ import {
   clearCartThunk,
   fetchCart,
   removeCartItemThunk,
-  resetCart,
   selectCartCount,
   selectCartError,
   selectCartItems,
-  selectCartLastFetchedFor,
   selectCartLoading,
   selectCartSubtotal,
   updateCartQuantityThunk,
@@ -24,25 +22,14 @@ export const useCart = () => {
   const error = useSelector(selectCartError);
   const count = useSelector(selectCartCount);
   const subtotal = useSelector(selectCartSubtotal);
-  const lastFetchedFor = useSelector(selectCartLastFetchedFor);
 
   const userId = user?.id ?? null;
-  const userKey = userId ?? 'guest';
-  const initialized = lastFetchedFor === userKey;
 
+  // Fetch cart when user changes (login/logout/initialization)
   useEffect(() => {
     if (authLoading) return;
-    if (lastFetchedFor && lastFetchedFor !== userKey) {
-      dispatch(resetCart());
-    }
-  }, [authLoading, dispatch, lastFetchedFor, userKey]);
-
-  useEffect(() => {
-    if (authLoading) return;
-    if (!initialized && !loading) {
-      dispatch(fetchCart({ userId }));
-    }
-  }, [authLoading, dispatch, initialized, loading, userId]);
+    dispatch(fetchCart({ userId }));
+  }, [authLoading, dispatch, userId]);
 
   const refresh = useCallback(() => dispatch(fetchCart({ userId })), [dispatch, userId]);
 
@@ -79,7 +66,6 @@ export const useCart = () => {
     items,
     loading,
     error,
-    initialized,
     count,
     subtotal,
     addItem,

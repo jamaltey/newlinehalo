@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useFavorites } from '../hooks/useFavorites';
-import { CART_STORAGE_KEY, readStoredCart } from '../store/cartSlice';
-import { buildCartKey, normalizeNumber, normalizeQuantity } from '../utils/cartUtils';
+import { handleUserChange } from '../store/cartSlice';
 import supabase from '../utils/supabase';
 import AuthContext from './AuthContext';
 
 const AuthProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -89,58 +90,10 @@ const AuthProvider = ({ children }) => {
       console.error('Error syncing favorites on login:', favoritesSyncError);
     }
 
-    // Sync guest cart from localStorage to the user's account on login
-    try {
-      const localCart = readStoredCart();
-      if (Array.isArray(localCart) && localCart.length > 0) {
-        const userId = data.user.id;
-        const { data: remoteCart, error: remoteError } = await supabase
-          .from('cart_items')
-          .select('product_id, size, color_id, quantity')
-          .eq('profile_id', userId);
-        if (remoteError) throw remoteError;
-
-        const remoteMap = new Map(
-          (remoteCart ?? []).map(row => [
-            buildCartKey(row.product_id, row.size, row.color_id),
-            normalizeQuantity(row.quantity),
-          ])
-        );
-
-        const rows = localCart
-          .map(item => {
-            const productId = normalizeNumber(item.productId);
-            if (productId === null) return null;
-            const size =
-              typeof item.size === 'string' && item.size.trim() ? item.size.trim() : null;
-            const colorId =
-              item.colorId === null || item.colorId === undefined
-                ? null
-                : normalizeNumber(item.colorId);
-            const key = buildCartKey(productId, size, colorId);
-            const mergedQuantity = normalizeQuantity(item.quantity) + (remoteMap.get(key) ?? 0);
-            remoteMap.set(key, mergedQuantity);
-            return {
-              profile_id: userId,
-              product_id: productId,
-              size,
-              color_id: colorId,
-              quantity: mergedQuantity,
-            };
-          })
-          .filter(Boolean);
-
-        if (rows.length > 0) {
-          await supabase
-            .from('cart_items')
-            .upsert(rows, { onConflict: 'profile_id,product_id,size,color_id' });
-        }
-
-        localStorage.removeItem(CART_STORAGE_KEY);
-      }
-    } catch (cartSyncError) {
-      console.error('Error syncing cart on login:', cartSyncError);
-    }
+    // Dispatch Redux thunk to handle cart sync on login
+    dispatch(handleUserChange({ oldUserId: null, newUserId: data.user.id })).catch(syncError => {
+      console.error('Error syncing cart on login:', syncError);
+    });
 
     setLoading(false);
     return data;
@@ -150,31 +103,13 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     const currentUser = user;
 
+    // Dispatch Redux thunk to handle cart persistence on logout
     if (currentUser) {
-      try {
-        const { data: remoteCart, error: cartError } = await supabase
-          .from('cart_items')
-          .select('product_id, size, color_id, quantity')
-          .eq('profile_id', currentUser.id);
-        if (cartError) throw cartError;
-        if (Array.isArray(remoteCart) && remoteCart.length > 0) {
-          localStorage.setItem(
-            CART_STORAGE_KEY,
-            JSON.stringify(
-              remoteCart.map(item => ({
-                productId: item.product_id,
-                size: item.size,
-                colorId: item.color_id,
-                quantity: item.quantity,
-              }))
-            )
-          );
-        } else {
-          localStorage.removeItem(CART_STORAGE_KEY);
+      dispatch(handleUserChange({ oldUserId: currentUser.id, newUserId: null })).catch(
+        syncError => {
+          console.error('Error syncing cart on logout:', syncError);
         }
-      } catch (cartPersistError) {
-        console.error('Error saving cart on sign out:', cartPersistError);
-      }
+      );
     }
 
     await supabase.auth.signOut();

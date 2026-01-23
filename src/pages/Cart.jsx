@@ -9,9 +9,9 @@ const formatPrice = value => {
 };
 
 const Cart = () => {
-  const { items, loading, initialized, count, subtotal, updateQuantity, removeItem } = useCart();
+  const { items, loading, count, subtotal, updateQuantity, removeItem } = useCart();
 
-  const isBusy = loading || !initialized;
+  const isBusy = loading;
   const isEmpty = !isBusy && items.length === 0;
   const deliveryPrice = 0;
   const total = subtotal + deliveryPrice;
